@@ -11,7 +11,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="348dp"
+        android:layout_height="380dp"
         android:layout_margin="30dp"
         android:background="@drawable/custome_edttext"
         app:cardCornerRadius="30dp"
@@ -19,7 +19,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="347dp"
+            android:layout_height="382dp"
             android:layout_gravity="center_horizontal"
             android:orientation="vertical"
             android:padding="24dp">
@@ -61,14 +61,25 @@
                 android:textColor="@color/black"
                 android:textColorHighlight="@color/cardview_dark_background" />
 
+
             <Button
                 android:id="@+id/loginbtn"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="10dp"
                 android:text="LOGIN"
-                app:cornerRadius="20dp"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                app:cornerRadius="20dp" />
+
+            <CheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:minHeight="48dp"
+                android:text="Remember me"
+                tools:ignore="TouchTargetSizeCheck" />
 
         </LinearLayout>
 
@@ -76,14 +87,14 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
+        android:id="@+id/signupbtn"
         android:layout_width="261dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
         android:padding="8dp"
+        android:text="Not registered yet? SignUp Now"
         android:textAlignment="center"
-        android:id="@+id/signupbtn"
-        android:textColor="@color/purple"
-        android:layout_marginBottom="20dp"
-        android:text="Not registered yet? SignUp Now" />
+        android:textColor="@color/purple" />
 
 
 </LinearLayout>
