@@ -21,6 +21,6 @@ public interface API {
 
     @FormUrlEncoded
     @GET("profile")
-    Call<List<UserProfile>> getProfile(@Field("token") String token);
+    Call<List<UserProfile>> getProfile(String token);
 
 }
