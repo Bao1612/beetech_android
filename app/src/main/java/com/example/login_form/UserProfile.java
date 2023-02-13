@@ -4,16 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 public class UserProfile {
 
-    @SerializedName("body")
+    @SerializedName("name")
     private String name;
+    @SerializedName("phone")
     private String phone;
+    @SerializedName("address")
     private String address;
-
-    public UserProfile(String name, String phone, String address) {
-        this.name = name;
-        this.phone = phone;
-        this.address = address;
-    }
 
     public String getName() {
         return name;

@@ -44,32 +44,39 @@ public class MainActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         loginbtn = findViewById(R.id.loginbtn);
         checkBox = findViewById(R.id.checkbox);
-        token = "";
+
 
     loginbtn.setOnClickListener(v -> loginbtnCLicked());
     }
+
+
 
     private void loginbtnCLicked() {
         API api = RetrofitClient.getRetrofitInstance().create(API.class);
         Call<UserToken> call = api.getLogin(username.getText().toString(), password.getText().toString());
         call.enqueue(new Callback<UserToken>() {
             @Override
-            public void onResponse(@NonNull Call<UserToken> call, @NonNull Response<UserToken> response) {
-//                Log.d(TAG, "onResponse: " + response.body().getToken());
-                token = response.body().getToken();
-                Log.d(TAG, "onResponse: " + token);
-                Intent myIntent = new Intent(MainActivity.this, Navigation.class);
-                startActivity(myIntent);
+            public void onResponse(Call<UserToken> call, Response<UserToken> response) {
+                if(response.isSuccessful()) {
+                    token = response.body().getToken();
+                    Log.d(TAG, "onResponse: " + token);
+                    Intent myIntent = new Intent(MainActivity.this, Navigation.class);
+                    startActivity(myIntent);
+                } else {
+                    Toast toast =  Toast.makeText(MainActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP | Gravity.END, 20, 30);
+                    toast.show();
+                }
             }
-
-            @SuppressLint("RtlHardcoded")
             @Override
             public void onFailure(@NonNull Call<UserToken> call, @NonNull Throwable t) {
                 Toast toast =  Toast.makeText(MainActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.TOP | Gravity.RIGHT, 20, 30);
+                toast.setGravity(Gravity.TOP | Gravity.END, 20, 30);
                 toast.show();
             }
         });
+
+    
 
         checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
             if(b) {
