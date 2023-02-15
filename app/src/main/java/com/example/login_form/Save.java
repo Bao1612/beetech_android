@@ -1,17 +1,8 @@
 package com.example.login_form;
 
-import static android.content.ContentValues.TAG;
-
-import android.accounts.AccountManager;
 import android.os.Bundle;
-
-import android.util.Log;
-import android.view.Gravity;
 import android.widget.TextView;
-import android.widget.Toast;
 
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -24,8 +15,6 @@ import retrofit2.Response;
 
 public class Save extends AppCompatActivity {
 
-    String token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0OTYwZjdkMC01MTdkLTQ0MzgtODA4MS1hZmRiZTI5YjU3M2UiLCJpYXQiOjE2NzYyOTQ1NDh9.UHhLqfo2Kqc8j0_Z8Z7PEtMfAgCAsNj8-tQqaV2uRsQxg1W9jUOXB4SUIt33_4A7VUpA4JU6aSv-ute7CNTBx3nDAxoJZfaQIGYsTaQ_h4B1ZmuTHXJgaJNqW06dPt2MFwD6zXCMjt-20irJ3ubvYhkuN9BS3LaFiVS4Sl_z3sA8TCXMp3QKPr4oM0MungaNM2BsEfPsgDMnSgDktYnEucSHDDZLYuqNj7rVaMxyOTwLAXI_1m4R11RXbxDmbAzDMCb8aS3IZ6Jb5wG7uvqDurqL0l95MzslX83Zo6dpFhgXvAW4aHFI4yC5xcscCibs2P2AOqzqSlEmQroMNWLr8JQ3PE81scb7SWxWlnqYLTmPlGP2haI_rP8BtLK0tE6GvO0P8j4mEPTmBG0NG1bSB8NwkawksASjtq9Ss6bgnTlTaKZItu4Xhn1Oc1F1vconh0HCSPJc_OSScN-6jMPkcKtIBvWM8P6Jj26HFEJzoUeT1S8GBJxWjLb_UalA_fqBTnd3TYAX4faIe-qt6VaGPoklqMcepRkJJzxrz2fQJ6Rmr8HwtNKKxV-Ic5Ct0FS0Ff6KbBi96xYAVkPLH40SR2Ima4otU_T0s9FMqCg51s_3Pdim6VrO7_9-rjJQBesRn7mQ5ifJ71JxbFX8CHv0eglkcfM8rs7_xfLTBb9ksUE";
-
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
@@ -33,36 +22,36 @@ public class Save extends AppCompatActivity {
         setTitle("Save");
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        TextView showProfile = findViewById(R.id.showprofile);
+        TextView showProfile = findViewById(R.id.profile);
 
         API api = RetrofitClient.getRetrofitInstance().create(API.class);
-        Call<List<UserProfile>> call = api.getProfile(" Bearer " + token);
+        Call<List<UserProfile>> call = api.getProfile("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxNDE5OWRlNS1hNWVlLTQ5NmMtYjY0Ni03NTY2NDg3MzQxYTgiLCJpYXQiOjE2NzQ4Njk5Njh9.wRB0QLSFQ6V3gjH8bHYQv8dM7Y2_bRq_cyZ1RmCi6tT-l9ruaZBxN8hxGVrMah6DAd7DGHYaQ-RsEoiYU5YxZZH-KAdcXwfcQy8w8Xdw6IkUWklgYd608Kh4AHZQs0a7E9fVYcId0mjS6kEQxIdEYk069EbzVC-7Ki9GxfuUIqwXxyhlZethFgQ9wY0N6TiV-QwdB7ON-P3UTHHcrXPeDe3pBPNkmcBofhyO_odqd1jG3w3GQyW82JPfePUKibbUBnIm26XHVuNpjrnEWjk0NmVuVvrCWoeFdVy7PZOghr0SUSYierXGDpnHMxDlc6xkMFKUdTEIDFG_QO3cxSY6Jsx_JHr8iq2JouovZQs7NFQSWBvkuqVojJRrj15errxLSuNO8V8LAVaCoQs6wetCXRXfHUF42PXDQYbC7Kr1gPnjYEQe3cwo72hAOfNAlvoh0gdBTwsdlj8LrvyNR2ULf1ejaeA0mHzST2TvD_cVxoFxdNLkqLpqtyUbYuGHVj0UrmdbpECQUerrGqk4ZDYqUIaDEPGrgYTyBMNWLA_kWKn78vfeidKmQ339Zx9CTo2DlUM2J9cjmRmBoIJTD1N8Psqi_l0SOC3UQfmGs4h3DhcJgwAX7QcPZyR3xqtkRGIxqX41AszCY-8-aAcdLPxYLFRz2Yo8CUl95jIZZa6w5S0");
+
         call.enqueue(new Callback<List<UserProfile>>() {
             @Override
             public void onResponse(Call<List<UserProfile>> call, Response<List<UserProfile>> response) {
-                if(response.isSuccessful()) {
-                    showProfile.setText("FAIL!!!");
+                if(!response.isSuccessful()) {
+                    showProfile.setText("Fail!!");
                     return;
                 }
 
                 List<UserProfile> userProfiles = response.body();
                 for(UserProfile userProfile : userProfiles) {
                     String content = "";
-                    content  += "Name: " +userProfile.getName() + "\n";
-                    content += "Phone: " + userProfile.getPhone() + "\n";
+                    content += "Name: " + userProfile.getName() + "\n";
+                    content += "SĐT: " + userProfile.getPhone() + "\n";
                     content += "Address: " + userProfile.getAddress() + "\n";
                     showProfile.append(content);
                 }
 
             }
 
-
             @Override
             public void onFailure(Call<List<UserProfile>> call, Throwable t) {
-
+                showProfile.setText(t.getMessage());
             }
         });
 
-
     }
+
 }
