@@ -45,9 +45,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Objects.requireNonNull(getSupportActionBar()).hide();
-        View inflatedView = getLayoutInflater().inflate(R.layout.fragment_profile, null);
-        showProfile = inflatedView.findViewById(R.id.userProfile);
-        showProfile.setText("Hello");
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         loginbtn = findViewById(R.id.loginbtn);
@@ -70,26 +67,6 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "onResponse: " + token);
                     Intent myIntent = new Intent(MainActivity.this, Navigation.class);
                     startActivity(myIntent);
-
-                    Call<UserProfile> callProfile = api.getProfile(token);
-                    callProfile.enqueue(new Callback<UserProfile>() {
-                        @Override
-                        public void onResponse(Call<UserProfile> callProfile, Response<UserProfile> response) {
-                            Toast toast;
-                            if(response.isSuccessful()) {
-                                showProfile.setText("Hello Wolrd");
-                                toast = Toast.makeText(MainActivity.this, "Author token thanh cong", Toast.LENGTH_SHORT);
-                            } else {
-                                toast = Toast.makeText(MainActivity.this, "Author token thất bại", Toast.LENGTH_SHORT);
-                            }
-                            toast.show();
-                        }
-
-                        @Override
-                        public void onFailure(Call<UserProfile> call, Throwable t) {
-
-                        }
-                    });
 
                 } else {
                     Toast toast =  Toast.makeText(MainActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT);

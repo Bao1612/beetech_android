@@ -2,14 +2,14 @@ package com.example.login_form;
 
 import com.google.gson.annotations.SerializedName;
 
-public class UserProfile {
+public class UserProfile extends UserToken {
 
-    @SerializedName("name")
     private String name;
-    @SerializedName("phone")
     private String phone;
-    @SerializedName("address")
+    @SerializedName("body")
     private String address;
+
+
 
     public String getName() {
         return name;
