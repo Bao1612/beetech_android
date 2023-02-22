@@ -6,10 +6,7 @@ public class UserProfile extends UserToken {
 
     private String name;
     private String phone;
-    @SerializedName("body")
     private String address;
-
-
 
     public String getName() {
         return name;
@@ -22,4 +19,5 @@ public class UserProfile extends UserToken {
     public String getAddress() {
         return address;
     }
+
 }

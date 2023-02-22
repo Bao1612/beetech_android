@@ -6,22 +6,17 @@ import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.login_form.api.API;
 
 import java.util.Objects;
 
@@ -35,10 +30,9 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText username;
     private EditText password;
+    private String token;
     private Button loginbtn;
     private CheckBox checkBox;
-    private TextView showProfile;
-    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +43,8 @@ public class MainActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         loginbtn = findViewById(R.id.loginbtn);
         checkBox = findViewById(R.id.checkbox);
-        token = "";
 
-    loginbtn.setOnClickListener(v -> loginbtnCLicked());
+        loginbtn.setOnClickListener(v -> loginbtnCLicked());
     }
 
 
@@ -63,8 +56,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<UserToken> call, @NonNull Response<UserToken> response) {
                 if(response.isSuccessful()) {
+                    assert response.body() != null;
                     token = " Bearer " + response.body().getToken();
-                    Log.d(TAG, "onResponse: " + token);
+                    Log.d(TAG, "Token: " + token);
+                    //Save token
+
+
+
+                    //Passing token to ProfileFragment
+                    Intent passingToken = new Intent(MainActivity.this, ProfileFragment.class);
+                    passingToken.putExtra("passingToken", token);
+
                     Intent myIntent = new Intent(MainActivity.this, Navigation.class);
                     startActivity(myIntent);
 
@@ -94,10 +96,4 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-    private void getProfile() {
-
-    }
-
-
 }

@@ -1,4 +1,6 @@
-package com.example.login_form;
+package com.example.login_form.api;
+
+import com.example.login_form.Post;
 
 import java.util.List;
 

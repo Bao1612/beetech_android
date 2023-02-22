@@ -8,6 +8,7 @@ public class UserToken {
     private String password;
     private String token;
 
+
     public String getUsername() {
         return username;
     }

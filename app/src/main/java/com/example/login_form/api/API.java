@@ -1,4 +1,7 @@
-package com.example.login_form;
+package com.example.login_form.api;
+
+import com.example.login_form.UserProfile;
+import com.example.login_form.UserToken;
 
 import retrofit2.Call;
 

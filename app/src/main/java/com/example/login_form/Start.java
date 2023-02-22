@@ -2,10 +2,10 @@ package com.example.login_form;
 
 import android.os.Bundle;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.login_form.api.JsonPlaceHolder;
 
 import java.util.List;
 import java.util.Objects;
