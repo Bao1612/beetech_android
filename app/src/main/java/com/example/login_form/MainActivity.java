@@ -53,10 +53,10 @@ public class MainActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         loginbtn = findViewById(R.id.loginbtn);
         checkBox = findViewById(R.id.checkbox);
-        sharedPreferences = getSharedPreferences(SHARED_DATA_KEY, MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        shared_password.setText(sharedPreferences.getString(SHARED_DATA_KEY,""));
-        shared_username.setText(sharedPreferences.getString(SHARED_DATA_KEY,""));
+//        sharedPreferences = getSharedPreferences(SHARED_DATA_KEY, MODE_PRIVATE);
+//        editor = sharedPreferences.edit();
+//        shared_password.setText(sharedPreferences.getString(SHARED_DATA_KEY,""));
+//        shared_username.setText(sharedPreferences.getString(SHARED_DATA_KEY,""));
 
         loginbtn.setOnClickListener(v -> loginbtnCLicked());
     }
@@ -74,21 +74,22 @@ public class MainActivity extends AppCompatActivity {
                     token = " Bearer " + response.body().getToken();
                     Log.d(TAG, "Token: " + token.toString());
                     //Save token
-                    if(checkBox.isChecked()) {
-                        editor.putString(KEY_API, token);
-                        editor.putString(KEY_USERNAME, username.toString());
-                        editor.putString(KEY_PASSWORD, password.toString());
-                        editor.commit();
-                    } else {
-                        editor.remove(KEY_API);
-                        editor.remove(KEY_USERNAME);
-                        editor.remove(KEY_PASSWORD);
-                        editor.commit();
-                    }
+//                    if(checkBox.isChecked()) {
+//                        editor.putString(KEY_API, token);
+//                        editor.putString(KEY_USERNAME, username.toString());
+//                        editor.putString(KEY_PASSWORD, password.toString());
+//                        editor.commit();
+//                    } else {
+//                        editor.remove(KEY_API);
+//                        editor.remove(KEY_USERNAME);
+//                        editor.remove(KEY_PASSWORD);
+//                        editor.commit();
+//                    }
 
 
                     //Passing token to ProfileFragment
-
+                    Intent passingToken = new Intent(MainActivity.this, ProfileFragment.class);
+                    passingToken.putExtra("token", token);
 
                     Intent myIntent = new Intent(MainActivity.this, Navigation.class);
                     startActivity(myIntent);

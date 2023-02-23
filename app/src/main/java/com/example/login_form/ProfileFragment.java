@@ -36,12 +36,10 @@ public class ProfileFragment extends Fragment {
         LayoutInflater lf = getActivity().getLayoutInflater();
         View view =  lf.inflate(layout.fragment_profile, container, false);
 
-        TextView showProfile = view.findViewById(id.userProfile);
-
-        Intent intent = getActivity().getIntent();
-        String token = intent.getStringExtra("passingToken");
+        TextView showProfile = view.findViewById(R.id.userProfile);
 
 
+        String token = getActivity().getIntent().getStringExtra("token");
 
         Log.d(TAG,"Passed token: " + token);
         API api = RetrofitClient.getRetrofitInstance().create(API.class);
