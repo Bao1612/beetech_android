@@ -3,10 +3,12 @@ package com.example.login_form;//tiem hieu ve package
 
 
 import static android.content.ContentValues.TAG;
+import static android.provider.Contacts.SettingsColumns.KEY;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -33,6 +35,14 @@ public class MainActivity extends AppCompatActivity {
     private String token;
     private Button loginbtn;
     private CheckBox checkBox;
+    private EditText shared_username, shared_password;
+    SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+    private static final String SHARED_DATA_KEY = "datalogin";
+    private static final String KEY_USERNAME = "username";
+    private static final String KEY_PASSWORD = "password";
+    private static final String KEY_API = "api";
+    private static final String KEY_CHECK = "checked";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         loginbtn = findViewById(R.id.loginbtn);
         checkBox = findViewById(R.id.checkbox);
+        sharedPreferences = getSharedPreferences(SHARED_DATA_KEY, MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        shared_password.setText(sharedPreferences.getString(SHARED_DATA_KEY,""));
+        shared_username.setText(sharedPreferences.getString(SHARED_DATA_KEY,""));
 
         loginbtn.setOnClickListener(v -> loginbtnCLicked());
     }
@@ -58,14 +72,23 @@ public class MainActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     assert response.body() != null;
                     token = " Bearer " + response.body().getToken();
-                    Log.d(TAG, "Token: " + token);
+                    Log.d(TAG, "Token: " + token.toString());
                     //Save token
-
+                    if(checkBox.isChecked()) {
+                        editor.putString(KEY_API, token);
+                        editor.putString(KEY_USERNAME, username.toString());
+                        editor.putString(KEY_PASSWORD, password.toString());
+                        editor.commit();
+                    } else {
+                        editor.remove(KEY_API);
+                        editor.remove(KEY_USERNAME);
+                        editor.remove(KEY_PASSWORD);
+                        editor.commit();
+                    }
 
 
                     //Passing token to ProfileFragment
-                    Intent passingToken = new Intent(MainActivity.this, ProfileFragment.class);
-                    passingToken.putExtra("passingToken", token);
+
 
                     Intent myIntent = new Intent(MainActivity.this, Navigation.class);
                     startActivity(myIntent);

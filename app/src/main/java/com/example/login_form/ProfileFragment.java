@@ -1,14 +1,17 @@
 package com.example.login_form;
 
 
+import static android.content.ContentValues.TAG;
 import static com.example.login_form.R.*;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +38,12 @@ public class ProfileFragment extends Fragment {
 
         TextView showProfile = view.findViewById(id.userProfile);
 
-        String token = getActivity().getIntent().getStringExtra("passingToken");
+        Intent intent = getActivity().getIntent();
+        String token = intent.getStringExtra("passingToken");
 
+
+
+        Log.d(TAG,"Passed token: " + token);
         API api = RetrofitClient.getRetrofitInstance().create(API.class);
         Call<UserProfile> callProfile = api.getProfile(token);
         callProfile.enqueue(new Callback<UserProfile>() {
