@@ -2,9 +2,11 @@ package com.example.login_form;
 
 
 import static android.content.ContentValues.TAG;
+import static android.content.Context.MODE_PRIVATE;
 import static com.example.login_form.R.*;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,6 +30,9 @@ import retrofit2.Response;
 
 public class ProfileFragment extends Fragment {
 
+    private static final String SHARED_PREF_NAME = "dataLogin";
+    private SharedPreferences sharedPreferences;
+    public static final String API_KEY = "token";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -36,14 +41,15 @@ public class ProfileFragment extends Fragment {
         LayoutInflater lf = getActivity().getLayoutInflater();
         View view =  lf.inflate(layout.fragment_profile, container, false);
 
-        TextView showProfile = view.findViewById(R.id.userProfile);
+        TextView showProfile = view.findViewById(id.userProfile);
 
+        sharedPreferences = getActivity().getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
 
-        String token = getActivity().getIntent().getStringExtra("token");
+        String gicungdc = "Bearer " + sharedPreferences.getString(API_KEY, "");
 
-        Log.d(TAG,"Passed token: " + token);
+        Log.d(TAG,"Passed token: " + gicungdc);
         API api = RetrofitClient.getRetrofitInstance().create(API.class);
-        Call<UserProfile> callProfile = api.getProfile(token);
+        Call<UserProfile> callProfile = api.getProfile(gicungdc);
         callProfile.enqueue(new Callback<UserProfile>() {
             @Override
             public void onResponse(@NonNull Call<UserProfile> call, @NonNull Response<UserProfile> response) {

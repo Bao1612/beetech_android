@@ -3,7 +3,6 @@ package com.example.login_form;//tiem hieu ve package
 
 
 import static android.content.ContentValues.TAG;
-import static android.provider.Contacts.SettingsColumns.KEY;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,68 +30,79 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private EditText username;
+    private String Username, Password;
     private EditText password;
-    private String token;
     private Button loginbtn;
     private CheckBox checkBox;
-    private EditText shared_username, shared_password;
     SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
-    private static final String SHARED_DATA_KEY = "datalogin";
-    private static final String KEY_USERNAME = "username";
+
+    private static final String SHARED_PREF_NAME = "dataLogin";
+    private static final String KEY_USER = "user";
     private static final String KEY_PASSWORD = "password";
-    private static final String KEY_API = "api";
-    private static final String KEY_CHECK = "checked";
+    private static final String API_KEY = "token";
+    private static final String KEY_CHECK = "check";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Objects.requireNonNull(getSupportActionBar()).hide();
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         loginbtn = findViewById(R.id.loginbtn);
         checkBox = findViewById(R.id.checkbox);
-//        sharedPreferences = getSharedPreferences(SHARED_DATA_KEY, MODE_PRIVATE);
-//        editor = sharedPreferences.edit();
-//        shared_password.setText(sharedPreferences.getString(SHARED_DATA_KEY,""));
-//        shared_username.setText(sharedPreferences.getString(SHARED_DATA_KEY,""));
+        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        username.setText(sharedPreferences.getString(KEY_USER, ""));
+        password.setText(sharedPreferences.getString(KEY_PASSWORD, ""));
+        checkBox.setChecked(sharedPreferences.getBoolean(KEY_CHECK, false));
+
+
+
 
         loginbtn.setOnClickListener(v -> loginbtnCLicked());
+
+        loginbtnCLicked();
+
     }
 
 
-
     private void loginbtnCLicked() {
+        Username = username.getText().toString().trim();
+        Password = password.getText().toString().trim();
+
         API api = RetrofitClient.getRetrofitInstance().create(API.class);
-        Call<UserToken> call = api.getLogin(username.getText().toString(), password.getText().toString());
+        Call<UserToken> call = api.getLogin(username.getText().toString().trim(), password.getText().toString().trim());
         call.enqueue(new Callback<UserToken>() {
             @Override
             public void onResponse(@NonNull Call<UserToken> call, @NonNull Response<UserToken> response) {
                 if(response.isSuccessful()) {
-                    assert response.body() != null;
-                    token = " Bearer " + response.body().getToken();
-                    Log.d(TAG, "Token: " + token.toString());
-                    //Save token
-//                    if(checkBox.isChecked()) {
-//                        editor.putString(KEY_API, token);
-//                        editor.putString(KEY_USERNAME, username.toString());
-//                        editor.putString(KEY_PASSWORD, password.toString());
-//                        editor.commit();
-//                    } else {
-//                        editor.remove(KEY_API);
-//                        editor.remove(KEY_USERNAME);
-//                        editor.remove(KEY_PASSWORD);
-//                        editor.commit();
-//                    }
+                    UserToken userToken = response.body();
+                    Log.e(TAG, "Bao dep trai" + userToken.token);
+                    editor.putString(API_KEY, userToken.token);
+
+//                    Save token
+                    if(checkBox.isChecked()) {
+                        editor.putString(KEY_USER, Username);
+                        editor.putString(KEY_PASSWORD, Password);
+                        editor.putBoolean(KEY_CHECK, true);
+                        editor.commit();
+                    } else {
+                        editor.remove(KEY_USER);
+                        editor.remove(KEY_PASSWORD);
+                        editor.remove(KEY_CHECK);
+                        editor.commit();
+                    }
 
 
                     //Passing token to ProfileFragment
-                    Intent passingToken = new Intent(MainActivity.this, ProfileFragment.class);
-                    passingToken.putExtra("token", token);
+//                    Intent passingToken = new Intent(MainActivity.this, ProfileFragment.class);
+//                    passingToken.putExtra("token", token);
 
                     Intent myIntent = new Intent(MainActivity.this, Navigation.class);
                     startActivity(myIntent);
+
+                    finish();
 
                 } else {
                     Toast toast =  Toast.makeText(MainActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT);
@@ -107,17 +117,5 @@ public class MainActivity extends AppCompatActivity {
                 toast.show();
             }
         });
-
-    
-
-        checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
-            if(b) {
-                Log.d("???", "Should auto sign in");
-            }
-            else {
-                Log.d("???", "Should not auto sign in");
-            }
-        });
-
     }
 }
