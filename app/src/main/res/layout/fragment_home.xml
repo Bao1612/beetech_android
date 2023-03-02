@@ -29,11 +29,11 @@
         tools:ignore="MissingConstraints" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/inventory_action"
         android:layout_width="138dp"
         android:layout_height="66dp"
         android:layout_marginTop="44dp"
-        android:text="Button"
+        android:text="Inventory"
         app:layout_constraintEnd_toStartOf="@+id/button2"
         app:layout_constraintHorizontal_bias="0.323"
         app:layout_constraintStart_toStartOf="parent"

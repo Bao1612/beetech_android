@@ -3,7 +3,6 @@ package com.example.login_form;//tiem hieu ve package
 
 
 import static android.content.ContentValues.TAG;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -11,15 +10,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
 import com.example.login_form.api.API;
-
-import java.util.Objects;
 
 
 import retrofit2.Call;
@@ -34,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText password;
     private Button loginbtn;
     private CheckBox checkBox;
+    private ProgressBar spinner;
     SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
@@ -47,16 +47,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().hide();
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         loginbtn = findViewById(R.id.loginbtn);
         checkBox = findViewById(R.id.checkbox);
+        spinner = findViewById(R.id.progressBar1);
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
         editor = sharedPreferences.edit();
         username.setText(sharedPreferences.getString(KEY_USER, ""));
         password.setText(sharedPreferences.getString(KEY_PASSWORD, ""));
         checkBox.setChecked(sharedPreferences.getBoolean(KEY_CHECK, false));
-
 
 
 
@@ -76,10 +77,13 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<UserToken>() {
             @Override
             public void onResponse(@NonNull Call<UserToken> call, @NonNull Response<UserToken> response) {
+
+                spinner.setVisibility(View.GONE);
+
                 if(response.isSuccessful()) {
                     UserToken userToken = response.body();
-                    Log.e(TAG, "Bao dep trai" + userToken.token);
                     editor.putString(API_KEY, userToken.token);
+                    spinner.setVisibility(View.VISIBLE);
 
 //                    Save token
                     if(checkBox.isChecked()) {
@@ -94,20 +98,17 @@ public class MainActivity extends AppCompatActivity {
                         editor.commit();
                     }
 
-
-                    //Passing token to ProfileFragment
-//                    Intent passingToken = new Intent(MainActivity.this, ProfileFragment.class);
-//                    passingToken.putExtra("token", token);
-
                     Intent myIntent = new Intent(MainActivity.this, Navigation.class);
                     startActivity(myIntent);
 
                     finish();
 
                 } else {
+                    spinner.setVisibility(View.VISIBLE);
                     Toast toast =  Toast.makeText(MainActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.TOP | Gravity.END, 20, 30);
                     toast.show();
+
                 }
             }
             @Override

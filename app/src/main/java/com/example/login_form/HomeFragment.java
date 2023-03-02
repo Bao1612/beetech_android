@@ -42,7 +42,7 @@ public class HomeFragment extends Fragment {
 
         Button startbtn = view.findViewById(R.id.Startbtn);
         Button savebtn =  view.findViewById(R.id.Save);
-        Button button1 =  view.findViewById(R.id.button1);
+        Button inventory =  view.findViewById(R.id.inventory_action);
         Button button2 =  view.findViewById(R.id.button2);
 
 
@@ -50,7 +50,7 @@ public class HomeFragment extends Fragment {
 
         savebtn.setOnClickListener(v -> startActivity(new Intent(getActivity(), Save.class)));
 
-        button1.setOnClickListener(v -> startActivity(new Intent(getActivity(), Button1.class)));
+        inventory.setOnClickListener(v -> startActivity(new Intent(getActivity(), Inventory.class)));
 
         button2.setOnClickListener(v -> startActivity(new Intent(getActivity(), Button2.class)));
         return view;

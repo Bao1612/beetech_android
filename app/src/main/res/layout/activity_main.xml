@@ -96,5 +96,11 @@
         android:textAlignment="center"
         android:textColor="@color/purple" />
 
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" />
 
 </LinearLayout>
