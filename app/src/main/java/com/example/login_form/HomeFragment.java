@@ -13,26 +13,6 @@ import android.widget.Button;
 
 public class HomeFragment extends Fragment {
 
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//
-//
-//        Button startbtn = getView().findViewById(R.id.Startbtn);
-//        Button savebtn = getView().findViewById(R.id.Save);
-//        Button button1 = getView().findViewById(R.id.button1);
-//        Button button2 = getView().findViewById(R.id.button2);
-//
-//
-//        startbtn.setOnClickListener(v -> startActivity(new Intent(getActivity(), Start.class)));
-//
-//        savebtn.setOnClickListener(v -> startActivity(new Intent(getActivity(), Save.class)));
-//
-//        button1.setOnClickListener(v -> startActivity(new Intent(getActivity(), Button1.class)));
-//
-//        button2.setOnClickListener(v -> startActivity(new Intent(getActivity(), Button2.class)));
-//    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,13 +26,49 @@ public class HomeFragment extends Fragment {
         Button button2 =  view.findViewById(R.id.button2);
 
 
-        startbtn.setOnClickListener(v -> startActivity(new Intent(getActivity(), Start.class)));
+        startbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getActivity().getApplicationContext(), Start.class);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(myIntent);
+            }
 
-        savebtn.setOnClickListener(v -> startActivity(new Intent(getActivity(), Save.class)));
 
-        inventory.setOnClickListener(v -> startActivity(new Intent(getActivity(), Inventory.class)));
+        });
 
-        button2.setOnClickListener(v -> startActivity(new Intent(getActivity(), Button2.class)));
+        savebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getActivity().getApplicationContext(), Save.class);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(myIntent);
+            }
+
+
+        });
+
+        inventory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getActivity().getApplicationContext(), Inventory.class);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(myIntent);
+            }
+
+
+        });
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getActivity().getApplicationContext(), Button2.class);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(myIntent);
+            }
+
+
+        });
         return view;
     }
 }
