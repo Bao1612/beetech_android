@@ -19,16 +19,33 @@ import retrofit2.Response;
 
 public class ProfileFragment extends Fragment {
 
+
+    //Save user data
+    private String fullName, internalID;
+
+    SharedPreferences userData;
+    private SharedPreferences.Editor saveUserData;
+    private static final String SHARED_PREF_USER = "datauser";
+    private static final String FULL_NAME = "fullName";
+    private static final String INTERNAL_ID = "internalID";
+    //
+    //Get user token
     private static final String SHARED_PREF_NAME = "dataLogin";
     private SharedPreferences sharedPreferences;
     public static final String API_KEY = "token";
-
+    /////
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         LayoutInflater lf = getActivity().getLayoutInflater();
         View view =  lf.inflate(layout.fragment_profile, container, false);
+        //Save user data
+        userData = getActivity().getSharedPreferences(SHARED_PREF_USER,MODE_PRIVATE);
+        saveUserData = userData.edit();
+        fullName = userData.getString(FULL_NAME, "");
+        internalID = userData.getString(INTERNAL_ID, "");
+        //
 
         TextView showProfile = view.findViewById(id.userProfile);
 
@@ -47,7 +64,12 @@ public class ProfileFragment extends Fragment {
                     content += "Name: " + response.body().getName() + "\n";
                     content += "Phone: " + response.body().getPhone() + "\n";
                     content += "Address: " + response.body().getAddress() + "\n";
+                    content += "InternalID: " + response.body().getInternalID();
                     showProfile.append(content);
+
+                    saveUserData.putString(FULL_NAME, response.body().getName());
+                    saveUserData.putString(FULL_NAME, response.body().getInternalID());
+
                 } else {
                     Toast.makeText(getActivity(),"Author token thât bại",Toast.LENGTH_SHORT).show();
                 }

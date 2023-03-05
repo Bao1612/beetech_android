@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     finish();
 
                 } else {
-                    spinner.setVisibility(View.VISIBLE);
+                    spinner.setVisibility(View.INVISIBLE);
                     Toast toast =  Toast.makeText(MainActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.TOP | Gravity.END, 20, 30);
                     toast.show();

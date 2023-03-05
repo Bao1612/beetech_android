@@ -2,7 +2,7 @@ package com.example.login_form;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
-import android.graphics.Color;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.shuhart.stepview.StepView;
 
+import java.util.ArrayList;
+
 
 public class Inventory extends AppCompatActivity {
 
@@ -24,8 +26,6 @@ public class Inventory extends AppCompatActivity {
     Button btnNext, btnBack;
 
     int stepIndex = 0;
-    String[] stepText = {"Page 1", "Page 2", "Page 3", "Page 4"};
-    String[] descriptionText = {"Lorem page 1", "Lorem page 2", "Lorem page 3", "Lorem page 4"};
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
@@ -33,8 +33,7 @@ public class Inventory extends AppCompatActivity {
         setContentView(R.layout.activity_inventory);
         setTitle("Inventory");
 
-        stepTextView = findViewById(R.id.stepTextView);
-        descriptionTextView = findViewById(R.id.descriptionTextView);
+
         stepView = findViewById(R.id.step_view);
         btnNext = findViewById(R.id.next);
         btnBack = findViewById(R.id.back);
@@ -51,11 +50,6 @@ public class Inventory extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stepView.getState()
-                        .animationType(StepView.ANIMATION_ALL)
-                        .stepsNumber(4)
-                        .animationDuration(getResources().getInteger(android.R.integer.config_shortAnimTime))
-                        .commit();
                 goBack();
             }
         });
@@ -65,27 +59,19 @@ public class Inventory extends AppCompatActivity {
     private void goNext() {
         stepView.getState()
                 .animationType(StepView.ANIMATION_ALL)
-                .stepsNumber(4)
+                .stepsNumber(3)
                 .animationDuration(getResources().getInteger(android.R.integer.config_shortAnimTime))
                 .commit();
+        stepView.done(true);
         nextStep();
     }
 
     private void goBack() {
-        View decorView = getWindow().getDecorView();
-        decorView.setOnSystemUiVisibilityChangeListener
-                (new View.OnSystemUiVisibilityChangeListener() {
-                    @Override
-                    public void onSystemUiVisibilityChange(int visibility) {
-                        // Note that system bars will only be "visible" if none of the
-                        // LOW_PROFILE, HIDE_NAVIGATION, or FULLSCREEN flags are set.
-                        if (stepIndex == 0) {
-                            btnBack.setVisibility(View.INVISIBLE);
-                        } else if(stepIndex <= 3 && stepIndex > 0){
-                            btnBack.setVisibility(View.VISIBLE);
-                        }
-                    }
-                });
+        stepView.getState()
+                .animationType(StepView.ANIMATION_LINE)
+                .stepsNumber(3)
+                .animationDuration(getResources().getInteger(android.R.integer.config_shortAnimTime))
+                .commit();
         backStep();
     }
 
@@ -95,11 +81,12 @@ public class Inventory extends AppCompatActivity {
             @Override
             public void run() {
                 stepIndex++;
-                if(stepIndex <= stepText.length) {
-                    stepTextView.setText(stepText[stepIndex]);
-                    descriptionTextView.setText(descriptionText[stepIndex]);
+                if(stepIndex == 2) {
+                    btnNext.setVisibility(View.INVISIBLE);
                     stepView.go(stepIndex, true);
-                    Log.d(TAG, "stepIndex" + stepIndex);
+                } else if(stepIndex < 2) {
+                    stepView.go(stepIndex, true);
+                    btnBack.setVisibility(View.VISIBLE);
                 }
             }
         }, 0);
@@ -111,11 +98,13 @@ public class Inventory extends AppCompatActivity {
             @Override
             public void run() {
                 stepIndex--;
-                if(stepIndex <= stepText.length) {
-                    stepTextView.setText(stepText[stepIndex]);
-                    descriptionTextView.setText(descriptionText[stepIndex]);
+                if(stepIndex == 0) {
+                    btnBack.setVisibility(View.INVISIBLE);
                     stepView.go(stepIndex, true);
-                    Log.d(TAG, "stepIndexBack" + stepIndex);
+                    stepView.done(false);
+                } else if(stepIndex >= 0) {
+                    stepView.go(stepIndex, true);
+                    btnNext.setVisibility(View.VISIBLE);
                 }
 
 

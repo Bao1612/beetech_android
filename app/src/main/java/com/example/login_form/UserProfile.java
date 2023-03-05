@@ -7,7 +7,9 @@ public class UserProfile extends UserToken {
     private String name;
     private String phone;
     private String address;
+    private String internalId;
 
+    public String getInternalID() {return internalId;}
     public String getName() {
         return name;
     }
