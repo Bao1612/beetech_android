@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<UserToken> call, @NonNull Response<UserToken> response) {
 
-                spinner.setVisibility(View.GONE);
+
 
                 if(response.isSuccessful()) {
                     UserToken userToken = response.body();

@@ -43,8 +43,6 @@ public class ProfileFragment extends Fragment {
         //Save user data
         userData = getActivity().getSharedPreferences(SHARED_PREF_USER,MODE_PRIVATE);
         saveUserData = userData.edit();
-        fullName = userData.getString(FULL_NAME, "");
-        internalID = userData.getString(INTERNAL_ID, "");
         //
 
         TextView showProfile = view.findViewById(id.userProfile);
@@ -60,15 +58,18 @@ public class ProfileFragment extends Fragment {
             public void onResponse(@NonNull Call<UserProfile> call, @NonNull Response<UserProfile> response) {
                 if(response.isSuccessful()) {
                     String content = "";
+                    fullName = response.body().getName();
+                    internalID = response.body().getInternalID();
                     assert response.body() != null;
-                    content += "Name: " + response.body().getName() + "\n";
+                    content += "Name: " + fullName + "\n";
                     content += "Phone: " + response.body().getPhone() + "\n";
                     content += "Address: " + response.body().getAddress() + "\n";
-                    content += "InternalID: " + response.body().getInternalID();
+                    content += "InternalID: " + internalID;
                     showProfile.append(content);
 
-                    saveUserData.putString(FULL_NAME, response.body().getName());
-                    saveUserData.putString(FULL_NAME, response.body().getInternalID());
+                    saveUserData.putString(FULL_NAME, fullName);
+                    saveUserData.putString(INTERNAL_ID, internalID);
+                    saveUserData.commit();
 
                 } else {
                     Toast.makeText(getActivity(),"Author token thât bại",Toast.LENGTH_SHORT).show();

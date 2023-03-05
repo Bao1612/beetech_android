@@ -25,16 +25,16 @@
         app:sv_selectedStepNumberColor="@color/black"
         app:sv_selectedTextColor="@color/black"
         app:sv_stepLineWidth="8dp"
-        app:sv_doneCircleColor="@color/white"
-        app:sv_doneCircleRadius="12dp"
-        app:sv_doneStepLineColor="@color/green"
-        app:sv_doneStepMarkColor="@color/green"
         app:sv_nextStepCircleColor="@color/green"
         app:sv_nextTextColor="@color/black"
         app:sv_stepNumberTextSize="18sp"
         app:sv_stepPadding="4dp"
         app:sv_stepsNumber="3"
-        app:sv_stepViewStyle="@color/black" />
+        app:sv_stepViewStyle="@color/black"
+        app:sv_doneCircleColor="@color/white"
+        app:sv_doneCircleRadius="12dp"
+        app:sv_doneStepLineColor="@color/green"
+        app:sv_doneStepMarkColor="@color/green"/>
 
     <LinearLayout
         android:id="@+id/nav"
@@ -65,28 +65,176 @@
             android:visibility="visible" />
     </LinearLayout>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/empStore"
+            android:layout_width="match_parent"
+            android:layout_height="380dp"
+            android:layout_margin="30dp"
+            android:background="@drawable/custome_edttext"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="20dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nav">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="382dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal">
+
+                    <TextView
+                        android:id="@+id/empID"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:text="Emp ID: "
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/showEmpID"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="1234"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
+                    tools:ignore="ExtraText">
+
+                    <TextView
+                        android:id="@+id/empName"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="Employee: "
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/showEmpName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Quốc Bảo"
+                        android:textSize="16sp" />
+                    />
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Inventory*"
+                    android:textColorHint="@color/red"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="@+id/empName" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="150dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="10dp" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
     <androidx.cardview.widget.CardView
-        app:layout_constraintTop_toBottomOf="@+id/nav"
+        android:id="@+id/empTotal"
+        app:layout_constraintTop_toBottomOf="@+id/empStore"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="380dp"
+        android:layout_height="150dp"
         android:layout_margin="30dp"
         android:background="@drawable/custome_edttext"
-        app:cardCornerRadius="30dp"
+        app:cardCornerRadius="20dp"
         app:cardElevation="20dp">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-
-        android:hint="Store">
-
-        <com.google.android.material.textfield.TextInputEditText
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+        <LinearLayout
+            android:id="@+id/storeTotal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:text="Total: "
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/showTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/found"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:text="Found: "
+                android:textColor="@color/green"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/showFound"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/missed"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="Missed: "
+                android:textColor="@color/red"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/showMissed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+
     </androidx.cardview.widget.CardView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
