@@ -52,8 +52,8 @@ public class Inventory extends AppCompatActivity {
 
         //Set user data
         getUserData = getSharedPreferences(SHARED_PREF_USER, MODE_PRIVATE);
-        showEmpID.setText(getUserData.getString(FULL_NAME, ""));
-        showEmpName.setText(getUserData.getString(INTERNAL_ID, ""));
+        showEmpID.setText(getUserData.getString(INTERNAL_ID, ""));
+        showEmpName.setText(getUserData.getString(FULL_NAME, ""));
         //
 
         SimpleDateFormat realDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
