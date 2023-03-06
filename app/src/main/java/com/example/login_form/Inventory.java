@@ -10,19 +10,18 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import com.shuhart.stepview.StepView;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 
 public class Inventory extends AppCompatActivity {
 
     StepView stepView;
     Button btnNext, btnBack;
-    TextView showEmpID, showEmpName;
+    TextView showEmpID, showEmpName, showRealTimeDate, showRealTime;
 
     Spinner spinner;
     String[] county = {"Viet Nam", "USA", "JAPAN", "LAO"};
@@ -48,12 +47,21 @@ public class Inventory extends AppCompatActivity {
         showEmpID = findViewById(R.id.showEmpID);
         showEmpName = findViewById(R.id.showEmpName);
         spinner = findViewById(R.id.spinner);
+        showRealTimeDate = findViewById(R.id.showRealTimeDate);
+        showRealTime = findViewById(R.id.showRealTime);
 
         //Set user data
         getUserData = getSharedPreferences(SHARED_PREF_USER, MODE_PRIVATE);
         showEmpID.setText(getUserData.getString(FULL_NAME, ""));
         showEmpName.setText(getUserData.getString(INTERNAL_ID, ""));
         //
+
+        SimpleDateFormat realDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        String currentDate = realDate.format(new Date());
+        showRealTimeDate.setText(currentDate);
+
+
+
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Inventory.this, android.R.layout.simple_spinner_item, county);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -62,7 +70,6 @@ public class Inventory extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String value = parent.getItemAtPosition(position).toString();
                 Toast.makeText(Inventory.this, county[position], Toast.LENGTH_SHORT).show();
             }
 
@@ -106,6 +113,7 @@ public class Inventory extends AppCompatActivity {
                 .stepsNumber(3)
                 .animationDuration(getResources().getInteger(android.R.integer.config_shortAnimTime))
                 .commit();
+        stepView.done(false);
         backStep();
     }
 
@@ -116,11 +124,27 @@ public class Inventory extends AppCompatActivity {
             public void run() {
                 stepIndex++;
                 if(stepIndex == 2) {
+                    findViewById(R.id.cardview3).setVisibility(View.VISIBLE);
+                    findViewById(R.id.cardview2).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.cardview1).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.empTotal).setVisibility(View.INVISIBLE);
                     btnNext.setVisibility(View.INVISIBLE);
                     stepView.go(stepIndex, true);
-                } else if(stepIndex < 2) {
+                } else if(stepIndex == 1) {
+                    findViewById(R.id.cardview3).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.cardview2).setVisibility(View.VISIBLE);
+                    findViewById(R.id.cardview1).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.empTotal).setVisibility(View.INVISIBLE);
                     stepView.go(stepIndex, true);
                     btnBack.setVisibility(View.VISIBLE);
+                }else if(stepIndex == 0) {
+                    findViewById(R.id.cardview3).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.cardview2).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.cardview1).setVisibility(View.VISIBLE);
+                    findViewById(R.id.empTotal).setVisibility(View.VISIBLE);
+                    stepView.go(stepIndex, true);
+                    btnBack.setVisibility(View.INVISIBLE);
+                    btnNext.setVisibility(View.VISIBLE);
                 }
             }
         }, 0);
@@ -132,12 +156,28 @@ public class Inventory extends AppCompatActivity {
             @Override
             public void run() {
                 stepIndex--;
-                if(stepIndex == 0) {
+                if(stepIndex == 2) {
+                    findViewById(R.id.cardview3).setVisibility(View.VISIBLE);
+                    findViewById(R.id.cardview2).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.cardview1).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.empTotal).setVisibility(View.INVISIBLE);
+                    btnNext.setVisibility(View.INVISIBLE);
+                    stepView.go(stepIndex, true);
+                } else if(stepIndex == 1) {
+                    findViewById(R.id.cardview3).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.cardview2).setVisibility(View.VISIBLE);
+                    findViewById(R.id.cardview1).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.empTotal).setVisibility(View.INVISIBLE);
+                    stepView.go(stepIndex, true);
+                    btnBack.setVisibility(View.VISIBLE);
+                    btnNext.setVisibility(View.VISIBLE);
+                }else if(stepIndex == 0) {
+                    findViewById(R.id.cardview3).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.cardview2).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.cardview1).setVisibility(View.VISIBLE);
+                    findViewById(R.id.empTotal).setVisibility(View.VISIBLE);
+                    stepView.go(stepIndex, true);
                     btnBack.setVisibility(View.INVISIBLE);
-                    stepView.go(stepIndex, true);
-                    stepView.done(false);
-                } else if(stepIndex >= 0) {
-                    stepView.go(stepIndex, true);
                     btnNext.setVisibility(View.VISIBLE);
                 }
 
