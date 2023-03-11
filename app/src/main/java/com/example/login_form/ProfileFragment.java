@@ -33,6 +33,8 @@ public class ProfileFragment extends Fragment {
     private static final String SHARED_PREF_NAME = "dataLogin";
     private SharedPreferences sharedPreferences;
     public static final String API_KEY = "token";
+    public static final String KEY_USER = "user";
+    public static final String KEY_PASSWORD = "password";
     /////
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,

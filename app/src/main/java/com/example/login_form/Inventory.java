@@ -61,8 +61,6 @@ public class Inventory extends AppCompatActivity {
         showRealTimeDate.setText(currentDate);
 
 
-
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Inventory.this, android.R.layout.simple_spinner_item, county);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -125,23 +123,23 @@ public class Inventory extends AppCompatActivity {
                 stepIndex++;
                 if(stepIndex == 2) {
                     findViewById(R.id.cardview3).setVisibility(View.VISIBLE);
-                    findViewById(R.id.cardview2).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.cardview1).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.empTotal).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.empTotal).setVisibility(View.VISIBLE);
+                    findViewById(R.id.cardview2).setVisibility(View.GONE);
+                    findViewById(R.id.cardview1).setVisibility(View.GONE);
                     btnNext.setVisibility(View.INVISIBLE);
                     stepView.go(stepIndex, true);
                 } else if(stepIndex == 1) {
-                    findViewById(R.id.cardview3).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.cardview3).setVisibility(View.GONE);
+                    findViewById(R.id.empTotal).setVisibility(View.GONE);
                     findViewById(R.id.cardview2).setVisibility(View.VISIBLE);
-                    findViewById(R.id.cardview1).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.empTotal).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.cardview1).setVisibility(View.GONE);
                     stepView.go(stepIndex, true);
                     btnBack.setVisibility(View.VISIBLE);
                 }else if(stepIndex == 0) {
-                    findViewById(R.id.cardview3).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.cardview2).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.cardview3).setVisibility(View.GONE);
+                    findViewById(R.id.empTotal).setVisibility(View.GONE);
+                    findViewById(R.id.cardview2).setVisibility(View.GONE);
                     findViewById(R.id.cardview1).setVisibility(View.VISIBLE);
-                    findViewById(R.id.empTotal).setVisibility(View.VISIBLE);
                     stepView.go(stepIndex, true);
                     btnBack.setVisibility(View.INVISIBLE);
                     btnNext.setVisibility(View.VISIBLE);
@@ -158,24 +156,24 @@ public class Inventory extends AppCompatActivity {
                 stepIndex--;
                 if(stepIndex == 2) {
                     findViewById(R.id.cardview3).setVisibility(View.VISIBLE);
-                    findViewById(R.id.cardview2).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.cardview1).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.empTotal).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.empTotal).setVisibility(View.VISIBLE);
+                    findViewById(R.id.cardview2).setVisibility(View.GONE);
+                    findViewById(R.id.cardview1).setVisibility(View.GONE);
                     btnNext.setVisibility(View.INVISIBLE);
                     stepView.go(stepIndex, true);
                 } else if(stepIndex == 1) {
-                    findViewById(R.id.cardview3).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.cardview3).setVisibility(View.GONE);
+                    findViewById(R.id.empTotal).setVisibility(View.GONE);
                     findViewById(R.id.cardview2).setVisibility(View.VISIBLE);
-                    findViewById(R.id.cardview1).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.empTotal).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.cardview1).setVisibility(View.GONE);
                     stepView.go(stepIndex, true);
                     btnBack.setVisibility(View.VISIBLE);
                     btnNext.setVisibility(View.VISIBLE);
                 }else if(stepIndex == 0) {
-                    findViewById(R.id.cardview3).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.cardview2).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.cardview3).setVisibility(View.GONE);
+                    findViewById(R.id.empTotal).setVisibility(View.GONE);
+                    findViewById(R.id.cardview2).setVisibility(View.GONE);
                     findViewById(R.id.cardview1).setVisibility(View.VISIBLE);
-                    findViewById(R.id.empTotal).setVisibility(View.VISIBLE);
                     stepView.go(stepIndex, true);
                     btnBack.setVisibility(View.INVISIBLE);
                     btnNext.setVisibility(View.VISIBLE);
