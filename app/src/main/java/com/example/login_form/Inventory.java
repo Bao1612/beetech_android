@@ -19,6 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.login_form.api.API;
 import com.shuhart.stepview.StepView;
 import java.text.SimpleDateFormat;
@@ -32,6 +37,8 @@ import retrofit2.Response;
 
 
 public class Inventory extends AppCompatActivity {
+
+    String api = "http://125.212.249.230:3001/api/v1/stores";
 
     StepView stepView;
     Button btnNext, btnBack;
@@ -82,8 +89,6 @@ public class Inventory extends AppCompatActivity {
         showRealTimeDate.setText(currentDate);
 
         //Call api cardview 1
-
-
         Runnable r = new Runnable() {
             public void run() {
                 //Call api cardview 1
@@ -110,8 +115,9 @@ public class Inventory extends AppCompatActivity {
                 });
             }
         };
-
         new Thread(r).start();
+
+
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Inventory.this, android.R.layout.simple_spinner_item, county);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -146,6 +152,8 @@ public class Inventory extends AppCompatActivity {
         });
 
     }
+
+
 
     private void goNext() {
         stepView.getState()
