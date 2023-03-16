@@ -3,6 +3,8 @@ package com.example.login_form;//tiem hieu ve package
 
 
 import static android.content.ContentValues.TAG;
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -84,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
                     UserToken userToken = response.body();
                     editor.putString(API_KEY, userToken.token);
                     spinner.setVisibility(View.VISIBLE);
-
 //                    Save token
                     if(checkBox.isChecked()) {
                         editor.putString(KEY_USER, Username);

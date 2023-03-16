@@ -1,11 +1,14 @@
 package com.example.login_form;
 
 import static android.content.Context.MODE_PRIVATE;
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import static com.example.login_form.R.*;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +55,7 @@ public class ProfileFragment extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
 
         String beererToken = "Bearer " + sharedPreferences.getString(API_KEY, "");
+        Log.wtf(TAG, "bearer token: " + beererToken);
 
         API api = RetrofitClient.getRetrofitInstance().create(API.class);
         Call<UserProfile> callProfile = api.getProfile(beererToken);

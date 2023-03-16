@@ -1,8 +1,15 @@
 package com.example.login_form;
 
+
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,10 +18,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.login_form.api.API;
 import com.shuhart.stepview.StepView;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class Inventory extends AppCompatActivity {
@@ -23,8 +37,13 @@ public class Inventory extends AppCompatActivity {
     Button btnNext, btnBack;
     TextView showEmpID, showEmpName, showRealTimeDate, showRealTime;
 
+    //Get user token
+    private static final String SHARED_PREF_NAME = "dataLogin";
+    private SharedPreferences sharedPreferences;
+    public static final String API_KEY = "token";
+
     Spinner spinner;
-    String[] county = {"Viet Nam", "USA", "JAPAN", "LAO"};
+    ArrayList<String> county = new ArrayList<String>();
 
     //Get user data form database
     private static final String SHARED_PREF_USER = "datauser";
@@ -40,7 +59,6 @@ public class Inventory extends AppCompatActivity {
         setContentView(R.layout.activity_inventory);
         setTitle("Inventory");
 
-
         stepView = findViewById(R.id.step_view);
         btnNext = findViewById(R.id.next);
         btnBack = findViewById(R.id.back);
@@ -55,11 +73,45 @@ public class Inventory extends AppCompatActivity {
         showEmpID.setText(getUserData.getString(INTERNAL_ID, ""));
         showEmpName.setText(getUserData.getString(FULL_NAME, ""));
         //
-
+        //Get usertoken
+        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+        String token = sharedPreferences.getString(API_KEY, "");
+        //
         SimpleDateFormat realDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String currentDate = realDate.format(new Date());
         showRealTimeDate.setText(currentDate);
 
+        //Call api cardview 1
+
+
+        Runnable r = new Runnable() {
+            public void run() {
+                //Call api cardview 1
+                API api = RetrofitClient.getRetrofitInstance().create(API.class);
+                Call<Stores> callStore = api.getStore(token);
+                callStore.enqueue(new Callback<Stores>() {
+                    @Override
+                    public void onResponse(Call<Stores> call, Response<Stores> response) {
+                        if (response.isSuccessful()) {
+                            Log.d(TAG, "stores name is " + response.body().getName());
+                            Toast toast = Toast.makeText(getApplicationContext(), "Author thành công", Toast.LENGTH_LONG);
+                            toast.show();
+                            county.add(response.body().getName());
+                        } else {
+                            Toast toast = Toast.makeText(getApplicationContext(), "Author fail", Toast.LENGTH_LONG);
+                            toast.show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Stores> call, Throwable t) {
+
+                    }
+                });
+            }
+        };
+
+        new Thread(r).start();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Inventory.this, android.R.layout.simple_spinner_item, county);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -68,7 +120,7 @@ public class Inventory extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(Inventory.this, county[position], Toast.LENGTH_SHORT).show();
+                //Toast.makeText(Inventory.this, county[position], Toast.LENGTH_SHORT).show();
             }
 
             @Override

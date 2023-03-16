@@ -1,5 +1,6 @@
 package com.example.login_form.api;
 
+import com.example.login_form.Stores;
 import com.example.login_form.UserProfile;
 import com.example.login_form.UserToken;
 
@@ -19,5 +20,8 @@ public interface API {
 
     @GET("auth/profile")
     Call<UserProfile> getProfile(@Header("Authorization") String token);
+
+    @GET("stores")
+    Call<Stores> getStore(@Header("Authorization") String token);
 
 }
