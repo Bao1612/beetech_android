@@ -1,14 +1,8 @@
 package com.example.login_form;
 
-
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,20 +11,14 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import com.example.login_form.api.API;
 import com.shuhart.stepview.StepView;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,23 +26,22 @@ import retrofit2.Response;
 
 public class Inventory extends AppCompatActivity {
 
-    String api = "http://125.212.249.230:3001/api/v1/stores";
-
     StepView stepView;
     Button btnNext, btnBack;
     TextView showEmpID, showEmpName, showRealTimeDate, showRealTime;
 
     //Get user token
     private static final String SHARED_PREF_NAME = "dataLogin";
-    private SharedPreferences sharedPreferences;
     public static final String API_KEY = "token";
 
-    Spinner spinner;
-    ArrayList<String> county = new ArrayList<String>();
+    Spinner spinner, inventorytype, spinnerIventory, spinnerCate;
+    String[] stores = {};
+    String [] inventory_type = {"New", "Already Exist"};
+    String[] inventory = {"All", "Category"};
+    String[] categories = {"Category*"};
 
     //Get user data form database
     private static final String SHARED_PREF_USER = "datauser";
-    private SharedPreferences getUserData;
     public static final String FULL_NAME = "fullName";
     public static final String INTERNAL_ID = "internalID";
 
@@ -62,6 +49,11 @@ public class Inventory extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
+
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+        String token = sharedPreferences.getString(API_KEY, "");
+        API api = RetrofitClient.getRetrofitInstance().create(API.class);
+
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_inventory);
         setTitle("Inventory");
@@ -72,54 +64,27 @@ public class Inventory extends AppCompatActivity {
         showEmpID = findViewById(R.id.showEmpID);
         showEmpName = findViewById(R.id.showEmpName);
         spinner = findViewById(R.id.spinner);
+        spinnerCate = findViewById(R.id.categories);
+        inventorytype = findViewById(R.id.inventory_type);
+        spinnerIventory = findViewById(R.id.inventory);
+
         showRealTimeDate = findViewById(R.id.showRealTimeDate);
         showRealTime = findViewById(R.id.showRealTime);
 
         //Set user data
-        getUserData = getSharedPreferences(SHARED_PREF_USER, MODE_PRIVATE);
+        SharedPreferences getUserData = getSharedPreferences(SHARED_PREF_USER, MODE_PRIVATE);
         showEmpID.setText(getUserData.getString(INTERNAL_ID, ""));
         showEmpName.setText(getUserData.getString(FULL_NAME, ""));
         //
         //Get usertoken
-        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
-        String token = sharedPreferences.getString(API_KEY, "");
+
         //
         SimpleDateFormat realDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String currentDate = realDate.format(new Date());
         showRealTimeDate.setText(currentDate);
 
-        //Call api cardview 1
-        Runnable r = new Runnable() {
-            public void run() {
-                //Call api cardview 1
-                API api = RetrofitClient.getRetrofitInstance().create(API.class);
-                Call<Stores> callStore = api.getStore(token);
-                callStore.enqueue(new Callback<Stores>() {
-                    @Override
-                    public void onResponse(Call<Stores> call, Response<Stores> response) {
-                        if (response.isSuccessful()) {
-                            Log.d(TAG, "stores name is " + response.body().getName());
-                            Toast toast = Toast.makeText(getApplicationContext(), "Author thành công", Toast.LENGTH_LONG);
-                            toast.show();
-                            county.add(response.body().getName());
-                        } else {
-                            Toast toast = Toast.makeText(getApplicationContext(), "Author fail", Toast.LENGTH_LONG);
-                            toast.show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Stores> call, Throwable t) {
-
-                    }
-                });
-            }
-        };
-        new Thread(r).start();
-
-
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Inventory.this, android.R.layout.simple_spinner_item, county);
+        //Stores
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(Inventory.this, android.R.layout.simple_spinner_item, stores);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
@@ -135,21 +100,107 @@ public class Inventory extends AppCompatActivity {
             }
         });
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
+        //Categories
+        ArrayAdapter<String> adapterInventoryType = new ArrayAdapter<>(Inventory.this, android.R.layout.simple_spinner_dropdown_item, inventory_type);
+        adapterInventoryType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        inventorytype.setAdapter(adapterInventoryType);
+        inventorytype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                goNext();
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(Inventory.this, inventory_type[position], Toast.LENGTH_SHORT).show();
+                if(inventory_type[position].equals("Already Exist")) {
+                    findViewById(R.id.inventory).setVisibility(View.VISIBLE);
+                } else {
+                    findViewById(R.id.inventory).setVisibility(View.GONE);
+                    findViewById(R.id.categories).setVisibility(View.GONE);
+                }
             }
 
-
-        });
-
-        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                goBack();
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
+
+        ArrayAdapter<String> adapterInventory = new ArrayAdapter<>(Inventory.this, android.R.layout.simple_spinner_item, inventory);
+        adapterInventory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerIventory.setAdapter(adapterInventory);
+
+        spinnerIventory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(inventory[position].equals("Category")) {
+                    findViewById(R.id.categories).setVisibility(View.VISIBLE);
+                } else {
+                    findViewById(R.id.categories).setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ArrayAdapter<String> adapterCate = new ArrayAdapter<>(Inventory.this, android.R.layout.simple_spinner_item, categories);
+        adapterCate.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCate.setAdapter(adapterCate);
+
+        spinnerCate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(categories[position].equals("Category*")) {
+                    Call<Categories> callCategories = api.getCategories(token);
+                    callCategories.enqueue(new Callback<Categories>() {
+                        @Override
+                        public void onResponse(@NonNull Call<Categories> call, @NonNull Response<Categories> response) {
+                            if(response.isSuccessful()) {
+                                assert response.body() != null;
+                                Log.d("CATE_SUCCESS", "cate: " + response.body().getName());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<Categories> call, @NonNull Throwable t) {
+                            Log.d("CATE_FAIL", "FAIL");
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+        //Call api cardview 1
+
+        Call<Stores> callStores = api.getStore(token);
+        callStores.enqueue(new Callback<Stores>() {
+            @Override
+            public void onResponse(@NonNull Call<Stores> call, @NonNull Response<Stores> response) {
+                if(response.isSuccessful()) {
+                    assert response.body() != null;
+                    Log.d("DEBUG_SUCCESS", "store: " + response.body().getName());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Stores> call, @NonNull Throwable t) {
+                Log.d("DEBUG_FAIL", "FAIL: ");
+            }
+        });
+
+        //Call api category
+
+
+
+        btnNext.setOnClickListener(v -> goNext());
+
+        btnBack.setOnClickListener(v -> goBack());
 
     }
 
@@ -177,69 +228,61 @@ public class Inventory extends AppCompatActivity {
 
     public void nextStep() {
         final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                stepIndex++;
-                if(stepIndex == 2) {
-                    findViewById(R.id.cardview3).setVisibility(View.VISIBLE);
-                    findViewById(R.id.empTotal).setVisibility(View.VISIBLE);
-                    findViewById(R.id.cardview2).setVisibility(View.GONE);
-                    findViewById(R.id.cardview1).setVisibility(View.GONE);
-                    btnNext.setVisibility(View.INVISIBLE);
-                    stepView.go(stepIndex, true);
-                } else if(stepIndex == 1) {
-                    findViewById(R.id.cardview3).setVisibility(View.GONE);
-                    findViewById(R.id.empTotal).setVisibility(View.GONE);
-                    findViewById(R.id.cardview2).setVisibility(View.VISIBLE);
-                    findViewById(R.id.cardview1).setVisibility(View.GONE);
-                    stepView.go(stepIndex, true);
-                    btnBack.setVisibility(View.VISIBLE);
-                }else if(stepIndex == 0) {
-                    findViewById(R.id.cardview3).setVisibility(View.GONE);
-                    findViewById(R.id.empTotal).setVisibility(View.GONE);
-                    findViewById(R.id.cardview2).setVisibility(View.GONE);
-                    findViewById(R.id.cardview1).setVisibility(View.VISIBLE);
-                    stepView.go(stepIndex, true);
-                    btnBack.setVisibility(View.INVISIBLE);
-                    btnNext.setVisibility(View.VISIBLE);
-                }
+        handler.postDelayed(() -> {
+            stepIndex++;
+            if(stepIndex == 2) {
+                findViewById(R.id.cardview3).setVisibility(View.VISIBLE);
+                findViewById(R.id.empTotal).setVisibility(View.VISIBLE);
+                findViewById(R.id.cardview2).setVisibility(View.GONE);
+                findViewById(R.id.cardview1).setVisibility(View.GONE);
+                btnNext.setVisibility(View.INVISIBLE);
+                stepView.go(stepIndex, true);
+            } else if(stepIndex == 1) {
+                findViewById(R.id.cardview3).setVisibility(View.GONE);
+                findViewById(R.id.empTotal).setVisibility(View.GONE);
+                findViewById(R.id.cardview2).setVisibility(View.VISIBLE);
+                findViewById(R.id.cardview1).setVisibility(View.GONE);
+                stepView.go(stepIndex, true);
+                btnBack.setVisibility(View.VISIBLE);
+            }else if(stepIndex == 0) {
+                findViewById(R.id.cardview3).setVisibility(View.GONE);
+                findViewById(R.id.empTotal).setVisibility(View.GONE);
+                findViewById(R.id.cardview2).setVisibility(View.GONE);
+                findViewById(R.id.cardview1).setVisibility(View.VISIBLE);
+                stepView.go(stepIndex, true);
+                btnBack.setVisibility(View.INVISIBLE);
+                btnNext.setVisibility(View.VISIBLE);
             }
         }, 0);
     }
 
     public void backStep() {
         final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                stepIndex--;
-                if(stepIndex == 2) {
-                    findViewById(R.id.cardview3).setVisibility(View.VISIBLE);
-                    findViewById(R.id.empTotal).setVisibility(View.VISIBLE);
-                    findViewById(R.id.cardview2).setVisibility(View.GONE);
-                    findViewById(R.id.cardview1).setVisibility(View.GONE);
-                    btnNext.setVisibility(View.INVISIBLE);
-                    stepView.go(stepIndex, true);
-                } else if(stepIndex == 1) {
-                    findViewById(R.id.cardview3).setVisibility(View.GONE);
-                    findViewById(R.id.empTotal).setVisibility(View.GONE);
-                    findViewById(R.id.cardview2).setVisibility(View.VISIBLE);
-                    findViewById(R.id.cardview1).setVisibility(View.GONE);
-                    stepView.go(stepIndex, true);
-                    btnBack.setVisibility(View.VISIBLE);
-                    btnNext.setVisibility(View.VISIBLE);
-                }else if(stepIndex == 0) {
-                    findViewById(R.id.cardview3).setVisibility(View.GONE);
-                    findViewById(R.id.empTotal).setVisibility(View.GONE);
-                    findViewById(R.id.cardview2).setVisibility(View.GONE);
-                    findViewById(R.id.cardview1).setVisibility(View.VISIBLE);
-                    stepView.go(stepIndex, true);
-                    btnBack.setVisibility(View.INVISIBLE);
-                    btnNext.setVisibility(View.VISIBLE);
-                }
-
-
+        handler.postDelayed(() -> {
+            stepIndex--;
+            if(stepIndex == 2) {
+                findViewById(R.id.cardview3).setVisibility(View.VISIBLE);
+                findViewById(R.id.empTotal).setVisibility(View.VISIBLE);
+                findViewById(R.id.cardview2).setVisibility(View.GONE);
+                findViewById(R.id.cardview1).setVisibility(View.GONE);
+                btnNext.setVisibility(View.INVISIBLE);
+                stepView.go(stepIndex, true);
+            } else if(stepIndex == 1) {
+                findViewById(R.id.cardview3).setVisibility(View.GONE);
+                findViewById(R.id.empTotal).setVisibility(View.GONE);
+                findViewById(R.id.cardview2).setVisibility(View.VISIBLE);
+                findViewById(R.id.cardview1).setVisibility(View.GONE);
+                stepView.go(stepIndex, true);
+                btnBack.setVisibility(View.VISIBLE);
+                btnNext.setVisibility(View.VISIBLE);
+            }else if(stepIndex == 0) {
+                findViewById(R.id.cardview3).setVisibility(View.GONE);
+                findViewById(R.id.empTotal).setVisibility(View.GONE);
+                findViewById(R.id.cardview2).setVisibility(View.GONE);
+                findViewById(R.id.cardview1).setVisibility(View.VISIBLE);
+                stepView.go(stepIndex, true);
+                btnBack.setVisibility(View.INVISIBLE);
+                btnNext.setVisibility(View.VISIBLE);
             }
         }, 0);
     }

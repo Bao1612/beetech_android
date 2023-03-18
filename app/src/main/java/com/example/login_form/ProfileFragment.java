@@ -15,6 +15,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.login_form.api.API;
+
+import java.util.Objects;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,7 +46,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        LayoutInflater lf = getActivity().getLayoutInflater();
+        LayoutInflater lf = requireActivity().getLayoutInflater();
         View view =  lf.inflate(layout.fragment_profile, container, false);
         //Save user data
         userData = getActivity().getSharedPreferences(SHARED_PREF_USER,MODE_PRIVATE);

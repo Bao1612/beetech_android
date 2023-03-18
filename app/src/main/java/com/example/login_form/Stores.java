@@ -1,11 +1,18 @@
 package com.example.login_form;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 public class Stores {
 
     private String name;
+    private String address;
+    private String phone;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
 
     public String getName() {
         return name;
