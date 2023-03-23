@@ -1,8 +1,10 @@
 package com.example.login_form;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.login_form.api.JsonPlaceHolder;
@@ -38,14 +40,16 @@ public class Start extends AppCompatActivity {
         Call<List<Post>> call = jsonPlaceHolder.getPosts();
 
         call.enqueue(new Callback<List<Post>>() {
+            @SuppressLint("SetTextI18n")
             @Override
-            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+            public void onResponse(@NonNull Call<List<Post>> call, @NonNull Response<List<Post>> response) {
                 if(!response.isSuccessful()) {
                     textviewresult.setText("Fail!!");
                     return;
                 }
 
                 List<Post> posts = response.body();
+                assert posts != null;
                 for(Post post : posts) {
                     String content = "";
                     content += "UserID: " + post.getUserID() + "\n";
@@ -59,7 +63,7 @@ public class Start extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Post>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Post>> call, @NonNull Throwable t) {
                 textviewresult.setText(t.getMessage());
             }
         });

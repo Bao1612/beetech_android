@@ -1,7 +1,5 @@
 package com.example.login_form;
 
-import static java.lang.String.valueOf;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,13 +11,16 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.login_form.api.API;
 import com.shuhart.stepview.StepView;
+
+import org.json.JSONArray;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -39,9 +40,9 @@ public class Inventory extends AppCompatActivity {
     public static final String API_KEY = "token";
 
     Spinner spinner, inventorytype, spinnerIventory, spinnerCate;
-//    String [] stores_selector = {};
-    ArrayList<String> stores_selector = new ArrayList<String>();
-    String [] inventory_type = {"New", "Already Exist"};
+
+    ArrayList<String> stores_selector = new ArrayList<>();
+    String[] inventory_type = {"New", "Already Exist"};
     String[] inventory = {"All", "Category"};
     String[] categories = {"Category*"};
 
@@ -87,23 +88,6 @@ public class Inventory extends AppCompatActivity {
         SimpleDateFormat realDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String currentDate = realDate.format(new Date());
         showRealTimeDate.setText(currentDate);
-
-        //Stores
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(Inventory.this, android.R.layout.simple_spinner_item, stores_selector);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(Inventory.this, county[position], Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         //Categories
         ArrayAdapter<String> adapterInventoryType = new ArrayAdapter<>(Inventory.this, android.R.layout.simple_spinner_dropdown_item, inventory_type);
@@ -155,7 +139,7 @@ public class Inventory extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(categories[position].equals("Category*")) {
-
+                    Toast.makeText(Inventory.this, categories[position], Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -172,25 +156,39 @@ public class Inventory extends AppCompatActivity {
         Call<List<Stores>> callStores = api.getStore(token);
         callStores.enqueue(new Callback<List<Stores>>() {
             @Override
-            public void onResponse(Call<List<Stores>> call, Response<List<Stores>> response) {
-                if(!response.isSuccessful()) {
-                    Log.d("DEBUG", "FAIL");
+            public void onResponse(@NonNull Call<List<Stores>> call, @NonNull Response<List<Stores>> response) {
+                if(response.isSuccessful()) {
+                    List<Stores> stores = response.body();
+                    for(Stores store : stores) {
+                        String getStore = store.getNameStore();
+                        stores_selector.add(getStore.toString());
+                        Log.d("STORE", "select Store: " + stores_selector);
+                        Log.d("CATe", "select CATe: " + inventory_type);
+                    }
                 }
 
-                List<Stores> stores = response.body();
-                for(Stores stores1 : stores) {
-                    String getStore = stores1.getNameStore();
-                    stores_selector.add(getStore);
-                    String str = new String();
-//invoking valueOf() method of the String class
-                    String string = str.valueOf(stores_selector);
-                    Log.d("STORE", "123: ");
 
-                }
             }
 
             @Override
-            public void onFailure(Call<List<Stores>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Stores>> call, @NonNull Throwable t) {
+
+            }
+        });
+
+        //Stores
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(Inventory.this, android.R.layout.simple_spinner_item, stores_selector);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(Inventory.this, county[position], Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
