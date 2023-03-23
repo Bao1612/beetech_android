@@ -69,7 +69,7 @@
     </LinearLayout>
 
         <androidx.cardview.widget.CardView
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/cardview1"
             android:layout_width="match_parent"
             android:layout_height="380dp"
@@ -185,7 +185,7 @@
         </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/cardview2"
         android:layout_width="match_parent"
         android:layout_height="380dp"

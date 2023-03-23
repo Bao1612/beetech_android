@@ -1,5 +1,7 @@
 package com.example.login_form;
 
+import static java.lang.String.valueOf;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,7 +19,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.login_form.api.API;
 import com.shuhart.stepview.StepView;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,7 +39,8 @@ public class Inventory extends AppCompatActivity {
     public static final String API_KEY = "token";
 
     Spinner spinner, inventorytype, spinnerIventory, spinnerCate;
-    String[] stores = {};
+//    String [] stores_selector = {};
+    ArrayList<String> stores_selector = new ArrayList<String>();
     String [] inventory_type = {"New", "Already Exist"};
     String[] inventory = {"All", "Category"};
     String[] categories = {"Category*"};
@@ -84,7 +89,7 @@ public class Inventory extends AppCompatActivity {
         showRealTimeDate.setText(currentDate);
 
         //Stores
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(Inventory.this, android.R.layout.simple_spinner_item, stores);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(Inventory.this, android.R.layout.simple_spinner_item, stores_selector);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
@@ -150,21 +155,7 @@ public class Inventory extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(categories[position].equals("Category*")) {
-                    Call<Categories> callCategories = api.getCategories(token);
-                    callCategories.enqueue(new Callback<Categories>() {
-                        @Override
-                        public void onResponse(@NonNull Call<Categories> call, @NonNull Response<Categories> response) {
-                            if(response.isSuccessful()) {
-                                assert response.body() != null;
-                                Log.d("CATE_SUCCESS", "cate: " + response.body().getName());
-                            }
-                        }
 
-                        @Override
-                        public void onFailure(@NonNull Call<Categories> call, @NonNull Throwable t) {
-                            Log.d("CATE_FAIL", "FAIL");
-                        }
-                    });
                 }
             }
 
@@ -178,19 +169,29 @@ public class Inventory extends AppCompatActivity {
 
         //Call api cardview 1
 
-        Call<Stores> callStores = api.getStore(token);
-        callStores.enqueue(new Callback<Stores>() {
+        Call<List<Stores>> callStores = api.getStore(token);
+        callStores.enqueue(new Callback<List<Stores>>() {
             @Override
-            public void onResponse(@NonNull Call<Stores> call, @NonNull Response<Stores> response) {
-                if(response.isSuccessful()) {
-                    assert response.body() != null;
-                    Log.d("DEBUG_SUCCESS", "store: " + response.body().getName());
+            public void onResponse(Call<List<Stores>> call, Response<List<Stores>> response) {
+                if(!response.isSuccessful()) {
+                    Log.d("DEBUG", "FAIL");
+                }
+
+                List<Stores> stores = response.body();
+                for(Stores stores1 : stores) {
+                    String getStore = stores1.getNameStore();
+                    stores_selector.add(getStore);
+                    String str = new String();
+//invoking valueOf() method of the String class
+                    String string = str.valueOf(stores_selector);
+                    Log.d("STORE", "123: ");
+
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<Stores> call, @NonNull Throwable t) {
-                Log.d("DEBUG_FAIL", "FAIL: ");
+            public void onFailure(Call<List<Stores>> call, Throwable t) {
+
             }
         });
 

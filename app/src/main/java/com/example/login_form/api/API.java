@@ -5,6 +5,8 @@ import com.example.login_form.Stores;
 import com.example.login_form.UserProfile;
 import com.example.login_form.UserToken;
 
+import java.util.List;
+
 import retrofit2.Call;
 
 import retrofit2.http.Field;
@@ -23,9 +25,9 @@ public interface API {
     Call<UserProfile> getProfile(@Header("Authorization") String token);
 
     @GET("v1/stores")
-    Call<Stores> getStore(@Header("Authorization") String token);
+    Call<List<Stores>> getStore(@Header("Authorization") String token);
 
     @GET("v1/categories")
-    Call<Categories> getCategories(@Header("Authorization") String token);
+    Call<List<Categories>> getCategories(@Header("Authorization") String token);
 
 }
