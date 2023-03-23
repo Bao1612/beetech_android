@@ -41,7 +41,7 @@ public class Inventory extends AppCompatActivity {
 
     Spinner spinner, inventorytype, spinnerIventory, spinnerCate;
 
-    ArrayList<String> stores_selector = new ArrayList<>();
+    String[] stores_selector = {"Select stores"};
     String[] inventory_type = {"New", "Already Exist"};
     String[] inventory = {"All", "Category"};
     String[] categories = {"Category*"};
@@ -161,7 +161,7 @@ public class Inventory extends AppCompatActivity {
                     List<Stores> stores = response.body();
                     for(Stores store : stores) {
                         String getStore = store.getNameStore();
-                        stores_selector.add(getStore.toString());
+
                         Log.d("STORE", "select Store: " + stores_selector);
                         Log.d("CATe", "select CATe: " + inventory_type);
                     }
