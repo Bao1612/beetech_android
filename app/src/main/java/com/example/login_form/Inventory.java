@@ -3,7 +3,6 @@ package com.example.login_form;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -86,7 +85,7 @@ public class Inventory extends AppCompatActivity {
         String currentDate = realDate.format(new Date());
         showRealTimeDate.setText(currentDate);
 
-        //Categories
+        //Inventory Type
         ArrayAdapter<String> adapterInventoryType = new ArrayAdapter<>(Inventory.this, android.R.layout.simple_spinner_dropdown_item, inventory_type);
         adapterInventoryType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         inventorytype.setAdapter(adapterInventoryType);
@@ -108,6 +107,8 @@ public class Inventory extends AppCompatActivity {
             }
         });
 
+
+        //Inventory
         ArrayAdapter<String> adapterInventory = new ArrayAdapter<>(Inventory.this, android.R.layout.simple_spinner_item, inventory);
         adapterInventory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerIventory.setAdapter(adapterInventory);
@@ -128,6 +129,7 @@ public class Inventory extends AppCompatActivity {
             }
         });
 
+        //Category
         ArrayAdapter<String> adapterCate = new ArrayAdapter<>(Inventory.this, android.R.layout.simple_spinner_item, categories);
         adapterCate.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCate.setAdapter(adapterCate);
@@ -146,8 +148,6 @@ public class Inventory extends AppCompatActivity {
             }
         });
 
-
-
         //Call api cardview 1
 
         Call<List<Stores>> callStores = api.getStore(token);
@@ -155,20 +155,17 @@ public class Inventory extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<List<Stores>> call, @NonNull Response<List<Stores>> response) {
                 if(response.isSuccessful()) {
+                    stores_selector.add("- - - SELECT STORE - - -");
                     List<Stores> stores = response.body();
                     assert stores != null;
-                    String[] setStore = new String[0];
-                    for (Stores store : stores) {
-                        String getStore = store.getNameStore();
-                        setStore = new String[]{getStore};
-                        Log.d("STORE", "get store: " + setStore);
+                    for (Stores getStore : stores) {
+                        stores_selector.add(getStore.getNameStore());
+                    }
 
 
 //                        Log.d("CATE", "select CATe: " + inventory_type);
-
-                    }
                     //Stores
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(Inventory.this, android.R.layout.simple_spinner_item, setStore);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(Inventory.this, android.R.layout.simple_spinner_item, stores_selector);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinner.setAdapter(adapter);
 
@@ -183,6 +180,8 @@ public class Inventory extends AppCompatActivity {
 
                         }
                     });
+
+
                 }
 
 
@@ -289,4 +288,3 @@ public class Inventory extends AppCompatActivity {
         }, 0);
     }
 }
-
