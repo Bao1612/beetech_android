@@ -16,11 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.login_form.api.API;
 import com.shuhart.stepview.StepView;
 
-import org.json.JSONArray;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -41,7 +38,7 @@ public class Inventory extends AppCompatActivity {
 
     Spinner spinner, inventorytype, spinnerIventory, spinnerCate;
 
-    String[] stores_selector = {"Select stores"};
+    ArrayList<String> stores_selector = new ArrayList<>();
     String[] inventory_type = {"New", "Already Exist"};
     String[] inventory = {"All", "Category"};
     String[] categories = {"Category*"};
@@ -159,12 +156,33 @@ public class Inventory extends AppCompatActivity {
             public void onResponse(@NonNull Call<List<Stores>> call, @NonNull Response<List<Stores>> response) {
                 if(response.isSuccessful()) {
                     List<Stores> stores = response.body();
-                    for(Stores store : stores) {
+                    assert stores != null;
+                    String[] setStore = new String[0];
+                    for (Stores store : stores) {
                         String getStore = store.getNameStore();
+                        setStore = new String[]{getStore};
+                        Log.d("STORE", "get store: " + setStore);
 
-                        Log.d("STORE", "select Store: " + stores_selector);
-                        Log.d("CATe", "select CATe: " + inventory_type);
+
+//                        Log.d("CATE", "select CATe: " + inventory_type);
+
                     }
+                    //Stores
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(Inventory.this, android.R.layout.simple_spinner_item, setStore);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner.setAdapter(adapter);
+
+                    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            //Toast.makeText(Inventory.this, setStore[position], Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
                 }
 
 
@@ -176,22 +194,7 @@ public class Inventory extends AppCompatActivity {
             }
         });
 
-        //Stores
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(Inventory.this, android.R.layout.simple_spinner_item, stores_selector);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(Inventory.this, county[position], Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         //Call api category
 
