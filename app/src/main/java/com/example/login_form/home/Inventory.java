@@ -1,4 +1,4 @@
-package com.example.login_form;
+package com.example.login_form.home;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,7 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.login_form.R;
+import com.example.login_form.api.RetrofitClient;
 import com.example.login_form.api.API;
+import com.example.login_form.java.Stores;
 import com.shuhart.stepview.StepView;
 
 import java.text.SimpleDateFormat;

@@ -1,6 +1,4 @@
-package com.example.login_form;
-
-import com.google.gson.annotations.SerializedName;
+package com.example.login_form.java;
 
 public class UserProfile extends UserToken {
 

@@ -1,16 +1,12 @@
-package com.example.login_form;//tiem hieu ve package
+package com.example.login_form.main;//tiem hieu ve package
 
 
-
-import static android.content.ContentValues.TAG;
-import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +16,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
+import com.example.login_form.R;
+import com.example.login_form.api.RetrofitClient;
+import com.example.login_form.java.UserToken;
 import com.example.login_form.api.API;
 
 

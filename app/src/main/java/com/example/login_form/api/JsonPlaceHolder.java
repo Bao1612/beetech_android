@@ -1,6 +1,6 @@
 package com.example.login_form.api;
 
-import com.example.login_form.Post;
+import com.example.login_form.java.Post;
 
 import java.util.List;
 

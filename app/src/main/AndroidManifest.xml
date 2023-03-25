@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <application
+        android:requestLegacyExternalStorage="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -18,7 +19,7 @@
         android:theme="@style/Theme.Login_form"
         tools:targetApi="33">
         <activity
-            android:name=".MainActivity"
+            android:name=".main.MainActivity"
             android:exported="true"
             >
             <intent-filter>
@@ -32,23 +33,23 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Start"
-            android:parentActivityName=".Navigation"
+            android:name=".home.Start"
+            android:parentActivityName=".main.Navigation"
             android:exported="true"/>
         <activity
-            android:name=".Save"
-            android:parentActivityName=".Navigation"
+            android:name=".home.Save"
+            android:parentActivityName=".main.Navigation"
             android:exported="true"/>
         <activity
-            android:name=".Inventory"
-            android:parentActivityName=".Navigation"
+            android:name=".home.Inventory"
+            android:parentActivityName=".main.Navigation"
             android:exported="true"/>
         <activity
-            android:name=".Button2"
-            android:parentActivityName=".Navigation"
+            android:name=".home.Button2"
+            android:parentActivityName=".main.Navigation"
             android:exported="true"/>
         <activity
-            android:name=".Navigation"
+            android:name=".main.Navigation"
 
             android:exported="true">
         </activity>

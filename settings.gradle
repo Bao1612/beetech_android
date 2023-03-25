@@ -10,6 +10,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        repositories {
+            maven { url "https://jitpack.io" }
+            mavenCentral()
+        }
     }
 }
 rootProject.name = "login_form"

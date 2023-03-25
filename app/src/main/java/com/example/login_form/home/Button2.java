@@ -1,8 +1,10 @@
-package com.example.login_form;
+package com.example.login_form.home;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.login_form.R;
 
 import java.util.Objects;
 

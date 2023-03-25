@@ -1,9 +1,9 @@
 package com.example.login_form.api;
 
-import com.example.login_form.Categories;
-import com.example.login_form.Stores;
-import com.example.login_form.UserProfile;
-import com.example.login_form.UserToken;
+import com.example.login_form.home.Categories;
+import com.example.login_form.java.Stores;
+import com.example.login_form.java.UserProfile;
+import com.example.login_form.java.UserToken;
 
 import java.util.List;
 

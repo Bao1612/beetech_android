@@ -1,4 +1,4 @@
-package com.example.login_form;
+package com.example.login_form.home;
 
 public class Categories {
 

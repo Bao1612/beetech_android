@@ -1,4 +1,4 @@
-package com.example.login_form;
+package com.example.login_form.home;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -7,7 +7,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.login_form.R;
 import com.example.login_form.api.JsonPlaceHolder;
+import com.example.login_form.java.Post;
 
 import java.util.List;
 import java.util.Objects;

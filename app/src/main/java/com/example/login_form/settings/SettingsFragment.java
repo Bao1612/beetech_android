@@ -1,4 +1,4 @@
-package com.example.login_form;
+package com.example.login_form.settings;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -13,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.example.login_form.R;
+import com.example.login_form.main.MainActivity;
 
 
 public class SettingsFragment extends Fragment {

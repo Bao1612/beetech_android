@@ -1,4 +1,4 @@
-package com.example.login_form;
+package com.example.login_form.main;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
