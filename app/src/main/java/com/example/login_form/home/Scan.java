@@ -8,14 +8,17 @@ import com.example.login_form.R;
 
 import java.util.Objects;
 
-public class Button2 extends AppCompatActivity {
+public class Scan extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
-        setContentView(R.layout.button2);
-        setTitle("Button2");
+        setContentView(R.layout.scanner);
+        setTitle("Scanner");
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+
+
     }
 
 }

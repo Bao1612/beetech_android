@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.login_form"
-        minSdk 24
+        minSdk 21
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -22,6 +22,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
+        android.applicationVariants.all { variant ->
+            variant.outputs.all {
+                outputFileName = "barcode-2d-demo_v${defaultConfig.versionName}.apk"
+            }
+        }
+
     }
 
     compileOptions {
@@ -47,7 +54,7 @@ dependencies {
     implementation "io.getstream:avatarview-coil:1.0.7"
     implementation 'com.github.dhaval2404:imagepicker:2.1'
     implementation "androidx.constraintlayout:constraintlayout:2.2.0-alpha09"
-    implementation 'com.google.android.material:material:1.9.0-beta01'
+    implementation 'com.google.android.material:material:1.9.0-alpha02'
     implementation 'com.github.shuhart:stepview:1.5.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'

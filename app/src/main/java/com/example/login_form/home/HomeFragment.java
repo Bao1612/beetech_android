@@ -2,13 +2,12 @@ package com.example.login_form.home;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import androidx.fragment.app.Fragment;
 
 import com.example.login_form.R;
 
@@ -25,7 +24,7 @@ public class HomeFragment extends Fragment {
         Button startbtn = view.findViewById(R.id.Startbtn);
         Button savebtn =  view.findViewById(R.id.Save);
         Button inventory =  view.findViewById(R.id.inventory_action);
-        Button button2 =  view.findViewById(R.id.button2);
+        Button scan =  view.findViewById(R.id.scan);
 
 
         startbtn.setOnClickListener(new View.OnClickListener() {
@@ -61,10 +60,10 @@ public class HomeFragment extends Fragment {
 
         });
 
-        button2.setOnClickListener(new View.OnClickListener() {
+        scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(getActivity().getApplicationContext(), Button2.class);
+                Intent myIntent = new Intent(getActivity().getApplicationContext(), Scan.class);
                 myIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(myIntent);
             }

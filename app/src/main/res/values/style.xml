@@ -2,5 +2,6 @@
 <resources>
     <style name="Button.Red" parent="ThemeOverlay.AppCompat">
         <item name="colorAccent">#FF0000</item>
+        <item name="cornerSize">50%</item>
     </style>
 </resources>

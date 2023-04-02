@@ -10,12 +10,13 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.login_form.R;
-import com.example.login_form.api.RetrofitClient;
 import com.example.login_form.api.API;
+import com.example.login_form.api.RetrofitClient;
 import com.example.login_form.java.Stores;
 import com.shuhart.stepview.StepView;
 
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -165,7 +167,6 @@ public class Inventory extends AppCompatActivity {
                     for (Stores getStore : stores) {
                         stores_selector.add(getStore.getNameStore());
                     }
-
 
 //                        Log.d("CATE", "select CATe: " + inventory_type);
                     //Stores
