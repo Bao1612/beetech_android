@@ -5,12 +5,14 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import static com.example.login_form.R.id;
 import static com.example.login_form.R.layout;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,7 +25,9 @@ import com.example.login_form.java.UserProfile;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.json.JSONArray;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,7 +36,8 @@ import retrofit2.Response;
 
 public class ProfileFragment extends Fragment {
 
-
+    private TextView dateCheckin, timeCheckin, dateCheckout, timeCheckout;
+    private Button checkinBtn, checkoutBtn;
     //Save user dataa
     private String fullName, internalID;
     private TextView empName, empRole;
@@ -58,8 +63,14 @@ public class ProfileFragment extends Fragment {
         LayoutInflater lf = requireActivity().getLayoutInflater();
         View view =  lf.inflate(layout.fragment_profile, container, false);
 
+        dateCheckout = view.findViewById(R.id.dateCheckout);
+        timeCheckout = view.findViewById(R.id.timeCheckout);
+        dateCheckin = view.findViewById(R.id.dateCheckin);
+        timeCheckin = view.findViewById(R.id.timeCheckin);
         empName = view.findViewById(R.id.empName);
         empRole = view.findViewById(R.id.empRole);
+        checkinBtn = view.findViewById(R.id.checkinBtn);
+        checkoutBtn = view.findViewById(R.id.checkoutBtn);
         //Save user data
         userData = getActivity().getSharedPreferences(SHARED_PREF_USER,MODE_PRIVATE);
         saveUserData = userData.edit();
@@ -88,12 +99,7 @@ public class ProfileFragment extends Fragment {
                 if(response.isSuccessful()) {
                     Response<UserProfile> json = response;
                     empName.setText(response.body().getName());
-                    JSONArray jsonArray = response.body().getCredential();
-                    Log.d("DEBUG_PROFILE", "onResponse" + jsonArray);
 
-                    for(int i = 0; i < jsonArray.length(); i++) {
-
-                    }
 
                 }
             }
@@ -101,6 +107,42 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onFailure(Call<UserProfile> call, Throwable t) {
 
+            }
+        });
+
+        checkinBtn.setOnClickListener(new View.OnClickListener() {
+
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onClick(View v) {
+                checkinBtn.setVisibility(View.GONE);
+                checkoutBtn.setVisibility(View.VISIBLE);
+
+                SimpleDateFormat realDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                String currentDate = realDate.format(new Date());
+                dateCheckin.setText("Date: " + currentDate);
+
+
+                SimpleDateFormat realTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                String currentTime = realTime.format(new Date());
+                timeCheckin.setText("Time: " + currentTime);
+
+            }
+        });
+
+        checkoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                SimpleDateFormat realDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                String currentDate = realDate.format(new Date());
+                dateCheckout.setText("Date: " + currentDate);
+
+
+                SimpleDateFormat realTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                String currentTime = realTime.format(new Date());
+                timeCheckout.setText("Time: " + currentTime);
+                checkoutBtn.setEnabled(false);
             }
         });
 

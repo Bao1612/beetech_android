@@ -8,6 +8,7 @@
 
     <!-- TODO: Update blank fragment layout -->
     <Button
+        android:drawableRight="@drawable/baseline_exit_to_app_24"
         android:text="Log out"
         android:theme="@style/Button.Red"
         android:id="@+id/logout_btn"
