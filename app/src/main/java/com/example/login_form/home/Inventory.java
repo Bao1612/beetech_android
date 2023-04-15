@@ -13,10 +13,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.login_form.R;
 import com.example.login_form.api.API;
 import com.example.login_form.api.RetrofitClient;
+import com.example.login_form.java.ProductAdapter;
+import com.example.login_form.java.ProductList;
 import com.example.login_form.java.Stores;
 import com.shuhart.stepview.StepView;
 
@@ -33,6 +37,8 @@ import retrofit2.Response;
 
 public class Inventory extends AppCompatActivity {
 
+    RecyclerView recyclerView;
+    ProductAdapter productAdapter;
     StepView stepView;
     Button btnNext, btnBack;
     TextView showEmpID, showEmpName, showRealTimeDate, showRealTime;
@@ -66,6 +72,7 @@ public class Inventory extends AppCompatActivity {
         setContentView(R.layout.activity_inventory);
         setTitle("Inventory");
 
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         stepView = findViewById(R.id.step_view);
         btnNext = findViewById(R.id.next);
         btnBack = findViewById(R.id.back);
@@ -208,9 +215,56 @@ public class Inventory extends AppCompatActivity {
 
         btnBack.setOnClickListener(v -> goBack());
 
+        setRecyclerView();
     }
 
+    private void setRecyclerView() {
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        productAdapter = new ProductAdapter(this, getList());
+        recyclerView.setAdapter(productAdapter);
+    }
 
+    private List<ProductList> getList() {
+        List<ProductList> productList = new ArrayList<>();
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+        productList.add(new ProductList("1", "iphone", "1234567"));
+
+        return productList;
+    }
 
     private void goNext() {
         stepView.getState()

@@ -1,14 +1,12 @@
 package com.example.login_form.profile;
 
 import static android.content.Context.MODE_PRIVATE;
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import static com.example.login_form.R.id;
 import static com.example.login_form.R.layout;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +38,7 @@ public class ProfileFragment extends Fragment {
     private Button checkinBtn, checkoutBtn;
     //Save user dataa
     private String fullName, internalID;
-    private TextView empName, empRole;
+    private TextView empName, empID;
 
     SharedPreferences userData;
     private SharedPreferences.Editor saveUserData;
@@ -68,7 +66,7 @@ public class ProfileFragment extends Fragment {
         dateCheckin = view.findViewById(R.id.dateCheckin);
         timeCheckin = view.findViewById(R.id.timeCheckin);
         empName = view.findViewById(R.id.empName);
-        empRole = view.findViewById(R.id.empRole);
+        empID = view.findViewById(R.id.empID);
         checkinBtn = view.findViewById(R.id.checkinBtn);
         checkoutBtn = view.findViewById(R.id.checkoutBtn);
         //Save user data
@@ -78,7 +76,6 @@ public class ProfileFragment extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
 
         String beererToken = "Bearer " + sharedPreferences.getString(API_KEY, "");
-        Log.wtf(TAG, "bearer token: " + beererToken);
         FloatingActionButton chooseImg = view.findViewById(id.chooseImg);
 
         //Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getColor));
@@ -99,6 +96,7 @@ public class ProfileFragment extends Fragment {
                 if(response.isSuccessful()) {
                     Response<UserProfile> json = response;
                     empName.setText(response.body().getName());
+                    empID.setText("Emp ID: " + response.body().getInternalID());
 
 
                 }
