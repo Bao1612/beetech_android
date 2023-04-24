@@ -8,8 +8,8 @@
         android:background="@color/white">
         <TextView
             android:id="@+id/id"
-            android:text="Product ID"
-            android:textSize="16dp"
+            android:text="@string/product_id"
+            android:textSize="16sp"
             android:gravity="center"
             android:textStyle="bold"
             android:padding="10dp"
@@ -17,8 +17,8 @@
 
         <TextView
             android:id="@+id/name"
-            android:text="Name"
-            android:textSize="16dp"
+            android:text="@string/name"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:padding="10dp"
             android:gravity="center"
@@ -28,8 +28,8 @@
 
         <TextView
             android:id="@+id/barCode"
-            android:text="BarCode"
-            android:textSize="16dp"
+            android:text="@string/barcode"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:gravity="center"
             android:padding="10dp"
@@ -38,8 +38,8 @@
         <TextView
             android:gravity="center"
             android:id="@+id/rfid"
-            android:text="RFID"
-            android:textSize="16dp"
+            android:text="@string/rfid"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:padding="10dp"
             android:layout_column="1"/>

@@ -7,7 +7,7 @@ public class ProductList {
     String barCode;
     String RFID;
 
-    public ProductList(String id, String name, String barCode) {
+    public ProductList(String id, String name, String barCode, String RFID) {
         this.id = id;
         this.name = name;
         this.barCode = barCode;

@@ -41,7 +41,6 @@ public class ProfileFragment extends Fragment {
     private TextView empName, empID;
 
     SharedPreferences userData;
-    private SharedPreferences.Editor saveUserData;
     private static final String SHARED_PREF_USER = "datauser";
     private static final String FULL_NAME = "fullName";
     private static final String INTERNAL_ID = "internalID";
@@ -51,9 +50,8 @@ public class ProfileFragment extends Fragment {
     private static final String SHARED_PREF_NAME = "dataLogin";
     private SharedPreferences sharedPreferences;
     public static final String API_KEY = "token";
-    public static final String KEY_USER = "user";
-    public static final String KEY_PASSWORD = "password";
     /////
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -71,7 +69,7 @@ public class ProfileFragment extends Fragment {
         checkoutBtn = view.findViewById(R.id.checkoutBtn);
         //Save user data
         userData = getActivity().getSharedPreferences(SHARED_PREF_USER,MODE_PRIVATE);
-        saveUserData = userData.edit();
+        SharedPreferences.Editor saveUserData = userData.edit();
         //
         sharedPreferences = getActivity().getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
 
@@ -79,69 +77,58 @@ public class ProfileFragment extends Fragment {
         FloatingActionButton chooseImg = view.findViewById(id.chooseImg);
 
         //Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getColor));
-        chooseImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ImagePicker.with(ProfileFragment.this)
-                        .crop()	    //Crop image and let user choose aspect ratio.
-                        .start();
-            }
-        });
+        chooseImg.setOnClickListener(v -> ImagePicker.with(ProfileFragment.this)
+                .crop()	    //Crop image and let user choose aspect ratio.
+                .start());
 
         API api = RetrofitClient.getRetrofitInstance().create(API.class);
         Call<UserProfile> callprofile = api.getProfile(beererToken);
         callprofile.enqueue(new Callback<UserProfile>() {
             @Override
-            public void onResponse(Call<UserProfile> call, Response<UserProfile> response) {
+            public void onResponse(@NonNull Call<UserProfile> call, @NonNull Response<UserProfile> response) {
                 if(response.isSuccessful()) {
-                    Response<UserProfile> json = response;
+                    assert response.body() != null;
                     empName.setText(response.body().getName());
                     empID.setText("Emp ID: " + response.body().getInternalID());
-
+                    saveUserData.putString(FULL_NAME, response.body().getName());
+                    saveUserData.putString(INTERNAL_ID, response.body().getInternalID());
+                    saveUserData.commit();
 
                 }
             }
 
             @Override
-            public void onFailure(Call<UserProfile> call, Throwable t) {
+            public void onFailure(@NonNull Call<UserProfile> call, @NonNull Throwable t) {
 
             }
         });
 
-        checkinBtn.setOnClickListener(new View.OnClickListener() {
+        checkinBtn.setOnClickListener(v -> {
+            checkinBtn.setVisibility(View.GONE);
+            checkoutBtn.setVisibility(View.VISIBLE);
 
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onClick(View v) {
-                checkinBtn.setVisibility(View.GONE);
-                checkoutBtn.setVisibility(View.VISIBLE);
-
-                SimpleDateFormat realDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                String currentDate = realDate.format(new Date());
-                dateCheckin.setText("Date: " + currentDate);
+            SimpleDateFormat realDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            String currentDate = realDate.format(new Date());
+            dateCheckin.setText("Date: " + currentDate);
 
 
-                SimpleDateFormat realTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                String currentTime = realTime.format(new Date());
-                timeCheckin.setText("Time: " + currentTime);
+            SimpleDateFormat realTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            String currentTime = realTime.format(new Date());
+            timeCheckin.setText("Time: " + currentTime);
 
-            }
         });
 
-        checkoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        checkoutBtn.setOnClickListener(v -> {
 
-                SimpleDateFormat realDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                String currentDate = realDate.format(new Date());
-                dateCheckout.setText("Date: " + currentDate);
+            SimpleDateFormat realDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            String currentDate = realDate.format(new Date());
+            dateCheckout.setText("Date: " + currentDate);
 
 
-                SimpleDateFormat realTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                String currentTime = realTime.format(new Date());
-                timeCheckout.setText("Time: " + currentTime);
-                checkoutBtn.setEnabled(false);
-            }
+            SimpleDateFormat realTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            String currentTime = realTime.format(new Date());
+            timeCheckout.setText("Time: " + currentTime);
+            checkoutBtn.setEnabled(false);
         });
 
 

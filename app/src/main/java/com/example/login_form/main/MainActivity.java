@@ -22,6 +22,8 @@ import com.example.login_form.java.UserToken;
 import com.example.login_form.api.API;
 
 
+import java.util.Objects;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText username;
     private String Username, Password;
     private EditText password;
-    private Button loginbtn;
     private CheckBox checkBox;
     private ProgressBar spinner;
     SharedPreferences sharedPreferences;
@@ -48,10 +49,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
-        loginbtn = findViewById(R.id.loginbtn);
+        Button loginbtn = findViewById(R.id.loginbtn);
         checkBox = findViewById(R.id.checkbox);
         spinner = findViewById(R.id.progressBar1);
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
@@ -79,10 +80,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<UserToken> call, @NonNull Response<UserToken> response) {
 
-
-
                 if(response.isSuccessful()) {
                     UserToken userToken = response.body();
+                    assert userToken != null;
                     editor.putString(API_KEY, userToken.token);
                     spinner.setVisibility(View.VISIBLE);
 //                    Save token
@@ -106,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     spinner.setVisibility(View.INVISIBLE);
                     Toast toast =  Toast.makeText(MainActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.TOP | Gravity.END, 20, 30);
                     toast.show();
 
                 }

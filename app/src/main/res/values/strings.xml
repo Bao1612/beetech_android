@@ -6,6 +6,10 @@
     <string name="hello_world">Hello World</string>
     <string name="down">Down</string>
     <string name="up">Up</string>
+    <string name="product_id">Product ID</string>
+    <string name="name">Name</string>
+    <string name="barcode">BarCode</string>
+    <string name="rfid">RFID</string>
 
     <string-array name="numbers">
         <item>One</item>

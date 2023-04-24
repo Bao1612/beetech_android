@@ -10,7 +10,6 @@ import com.example.login_form.R;
 
 import java.util.List;
 import java.util.Objects;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,7 +23,7 @@ public class Save extends AppCompatActivity {
         setTitle("Save");
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        TextView showProfile = findViewById(R.id.showprofile);
+
 
     }
 
