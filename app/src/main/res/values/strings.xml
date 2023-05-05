@@ -10,6 +10,7 @@
     <string name="name">Name</string>
     <string name="barcode">BarCode</string>
     <string name="rfid">RFID</string>
+    <string name="product_list">Product List</string>
 
     <string-array name="numbers">
         <item>One</item>

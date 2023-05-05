@@ -7,18 +7,18 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.login_form.R;
 import com.example.login_form.api.API;
 import com.example.login_form.api.RetrofitClient;
+import com.example.login_form.java.Product;
 import com.example.login_form.java.ProductAdapter;
 import com.example.login_form.java.ProductList;
 import com.example.login_form.java.Stores;
@@ -36,9 +36,8 @@ import retrofit2.Response;
 
 
 public class Inventory extends AppCompatActivity {
-
-    RecyclerView recyclerView;
-    ProductAdapter productAdapter;
+    private ArrayList<String> getProducts;
+    private ListView listView;
     StepView stepView;
     Button btnNext, btnBack;
     TextView showEmpID, showEmpName, showRealTimeDate, showRealTime;
@@ -52,12 +51,14 @@ public class Inventory extends AppCompatActivity {
     ArrayList<String> stores_selector = new ArrayList<>();
     String[] inventory_type = {"New", "Already Exist"};
     String[] inventory = {"All", "Category"};
-    String[] categories = {"Category*"};
+    ArrayList<String> categories = new ArrayList<>();
 
     //Get user data form database
     private static final String SHARED_PREF_USER = "datauser";
     public static final String FULL_NAME = "fullName";
     public static final String INTERNAL_ID = "internalID";
+
+
 
     int stepIndex = 0;
 
@@ -72,7 +73,7 @@ public class Inventory extends AppCompatActivity {
         setContentView(R.layout.activity_inventory);
         setTitle("Inventory");
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
         stepView = findViewById(R.id.step_view);
         btnNext = findViewById(R.id.next);
         btnBack = findViewById(R.id.back);
@@ -82,7 +83,8 @@ public class Inventory extends AppCompatActivity {
         spinnerCate = findViewById(R.id.categories);
         inventorytype = findViewById(R.id.inventory_type);
         spinnerIventory = findViewById(R.id.inventory);
-
+        listView = findViewById(R.id.listView);
+        getProducts = new ArrayList<String>();
         showRealTimeDate = findViewById(R.id.showRealTimeDate);
         showRealTime = findViewById(R.id.showRealTime);
 
@@ -150,9 +152,7 @@ public class Inventory extends AppCompatActivity {
         spinnerCate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(categories[position].equals("Category*")) {
-                    Toast.makeText(Inventory.this, categories[position], Toast.LENGTH_SHORT).show();
-                }
+
             }
 
             @Override
@@ -208,49 +208,78 @@ public class Inventory extends AppCompatActivity {
 
 
         //Call api category
+        Call<List<Categories>> callCategory = api.getCategories(token);
+        callCategory.enqueue(new Callback<List<Categories>>() {
+            @Override
+            public void onResponse(Call<List<Categories>> call, Response<List<Categories>> response) {
+                if(response.isSuccessful()) {
+                    categories.add("Category*");
+                    List<Categories> categories1 = response.body();
+                    for(Categories getCategory : categories1) {
+                        categories.add(getCategory.getName());
+                    }
+                    //Category
+                    ArrayAdapter<String> adapterCate = new ArrayAdapter<>(Inventory.this, android.R.layout.simple_spinner_item, categories);
+                    adapterCate.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerCate.setAdapter(adapterCate);
+
+                    spinnerCate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            //Toast.makeText(Inventory.this, setStore[position], Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Categories>> call, Throwable t) {
+
+            }
+        });
+
+        String iCategoryId = "3-IP16-CAT-AAAB";
+        //Call api products
+        Call<Product> accessProducts = api.accessProducts(token, iCategoryId);
+        accessProducts.enqueue(new Callback<Product>() {
+            @Override
+            public void onResponse(Call<Product> call, Response<Product> response) {
+                if(response.isSuccessful()) {
+                    Product  product = response.body();
+                    assert product != null;
+                    List<ProductList> productLists = product.getProduct();
+                    for(ProductList productList1 : productLists) {
+
+                        
 
 
+                    }
+
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Product> call, Throwable t) {
+
+            }
+        });
 
         btnNext.setOnClickListener(v -> goNext());
 
         btnBack.setOnClickListener(v -> goBack());
 
-        setRecyclerView();
     }
 
-    private void setRecyclerView() {
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        productAdapter = new ProductAdapter(this, getList());
-        recyclerView.setAdapter(productAdapter);
-    }
 
-    private List<ProductList> getList() {
-        List<ProductList> productList = new ArrayList<>();
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
-        productList.add(new ProductList("1", "iphone20 pro max", "1234567", "1234567"));
 
-        return productList;
-    }
+
 
     private void goNext() {
         stepView.getState()

@@ -69,7 +69,7 @@
     </LinearLayout>
 
         <androidx.cardview.widget.CardView
-            android:visibility="visible"
+            android:visibility="gone"
             android:id="@+id/cardview1"
             android:layout_width="match_parent"
             android:layout_height="380dp"
@@ -332,7 +332,7 @@
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/cardview3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -340,76 +340,28 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/empTotal">
 
-        <TableLayout
+        <TextView
+            android:id="@+id/productList"
+            android:textStyle="bold"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:stretchColumns="1,2,3,4"
-            android:layout_margin="0dp">
-            <TableRow
-                android:background="@color/green">
-                <TextView
-                    android:id="@+id/id"
-                    android:text="Product ID"
-                    android:textSize="16dp"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:padding="10dp"
-                    android:layout_column="1"/>
+            android:layout_height="wrap_content"
+            android:text="@string/product_list"
+            android:background="@color/green"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:layout_margin="0dp"/>
 
-                <TextView
-                    android:id="@+id/name"
-                    android:text="Name"
-                    android:textSize="16dp"
-                    android:textStyle="bold"
-                    android:padding="10dp"
-                    android:gravity="center"
-                    android:layout_column="1"/>
+        <ListView
+            android:id="@+id/listView"
+            android:backgroundTint="@color/blue"
+            android:layout_marginTop="28dp"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
 
 
-
-                <TextView
-                    android:id="@+id/barCode"
-                    android:text="BarCode"
-                    android:textSize="16dp"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:layout_column="1"/>
-
-                <TextView
-                    android:gravity="center"
-                    android:id="@+id/rfid"
-                    android:text="RFID"
-                    android:textSize="16dp"
-                    android:textStyle="bold"
-                    android:padding="10dp"
-                    android:layout_column="1"/>
-
-            </TableRow>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:foregroundGravity="center"
-                android:layout_height="wrap_content"
-                />
-
-        </TableLayout>
     </androidx.cardview.widget.CardView>
 
-    <androidx.core.widget.NestedScrollView
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_marginTop="36dp"
-        android:foregroundGravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/empTotal"
-        tools:layout_editor_absoluteX="0dp">
 
-        <TextView
-            android:id="@+id/text_view_result"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello world" />
-    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

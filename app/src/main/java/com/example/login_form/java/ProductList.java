@@ -2,31 +2,30 @@ package com.example.login_form.java;
 
 public class ProductList {
 
-    String id;
-    String name;
-    String barCode;
-    String RFID;
 
-    public ProductList(String id, String name, String barCode, String RFID) {
-        this.id = id;
-        this.name = name;
-        this.barCode = barCode;
-        this.RFID = RFID;
+    private String internalId;
+
+    private String aliasName;
+
+    private String barcodeId;
+
+    private String rfid;
+
+    public String getInternalId() {
+        return internalId;
     }
 
-    public String getId() {
-        return id;
+    public String getAliasName() {
+        return aliasName;
     }
 
-    public String getName() {
-        return name;
+    public String getBarcodeId() {
+        return barcodeId;
     }
 
-    public String getBarCode() {
-        return barCode;
+    public String getRfid() {
+        return rfid;
     }
 
-    public String getRFID() {
-        return RFID;
-    }
+
 }

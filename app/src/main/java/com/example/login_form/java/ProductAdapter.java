@@ -4,59 +4,60 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.login_form.R;
 
-import java.util.List;
+import java.util.ArrayList;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
+public class ProductAdapter extends BaseAdapter {
 
-    Context context;
-    List<ProductList> product_list;
+    private final ArrayList<ProductList> getProduct;
+    private final Context context;
+    private final int layout;
 
-    public ProductAdapter(Context context, List<ProductList> product_list) {
+    public ProductAdapter(ArrayList<ProductList> getProduct, Context context, int layout) {
+        this.getProduct = getProduct;
         this.context = context;
-        this.product_list = product_list;
-    }
-
-    @NonNull
-    @Override
-    public ProductAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.product_layout,parent,false);
-        return new ViewHolder(view);
+        this.layout = layout;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductAdapter.ViewHolder holder, int position) {
-        if(product_list != null && product_list.size() > 0) {
-            ProductList productList = product_list.get(position);
-            holder.id.setText(productList.getId());
-            holder.name.setText(productList.getName());
-            holder.barcode.setText(productList.getBarCode());
-            holder.rfid.setText(productList.getRFID());
-        } else {
-            return;
-        }
+    public int getCount() {
+        return getProduct.size();
     }
 
     @Override
-    public int getItemCount() {
-        return product_list.size();
+    public Object getItem(int position) {
+        return getProduct.get(position);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView id, name, barcode, rfid;
-        public ViewHolder(@NonNull View intenView) {
-            super(intenView);
-            id = intenView.findViewById(R.id.id);
-            name = intenView.findViewById(R.id.name);
-            barcode = intenView.findViewById(R.id.barCode);
-            rfid = intenView.findViewById(R.id.rfid);
-        }
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
+    private static class ViewHolder {
+        TextView productID, productName, productBarCode, productRFID;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        ViewHolder viewHolder = new ViewHolder();
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = layoutInflater.inflate(layout, null);
+        viewHolder.productID = convertView.findViewById(R.id.productID);
+        viewHolder.productName = convertView.findViewById(R.id.productName);
+        viewHolder.productBarCode = convertView.findViewById(R.id.productBarCode);
+        viewHolder.productRFID = convertView.findViewById(R.id.productRFID);
+        ProductList productList = getProduct.get(position);
+        viewHolder.productID.setText("ID: " + productList.getInternalId());
+        viewHolder.productName.setText("Products name: " + productList.getAliasName());
+        viewHolder.productBarCode.setText("Prodcts BarCode: " + productList.getBarcodeId());
+        viewHolder.productRFID.setText("Products RFID: " + productList.getRfid());
+
+        return convertView;
+    }
 }
