@@ -3,6 +3,7 @@ package com.example.login_form.home;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -36,7 +37,7 @@ import retrofit2.Response;
 
 
 public class Inventory extends AppCompatActivity {
-    private ArrayList<String> getProducts;
+    private List<ProductList> getProducts;
     private ListView listView;
     StepView stepView;
     Button btnNext, btnBack;
@@ -84,7 +85,7 @@ public class Inventory extends AppCompatActivity {
         inventorytype = findViewById(R.id.inventory_type);
         spinnerIventory = findViewById(R.id.inventory);
         listView = findViewById(R.id.listView);
-        getProducts = new ArrayList<String>();
+        getProducts = new ArrayList<>();
         showRealTimeDate = findViewById(R.id.showRealTimeDate);
         showRealTime = findViewById(R.id.showRealTime);
 
@@ -243,25 +244,31 @@ public class Inventory extends AppCompatActivity {
             }
         });
 
-        String iCategoryId = "3-IP16-CAT-AAAB";
+        String iCategoryId = "1-AOLE-CAT-AAAB";
         //Call api products
         Call<Product> accessProducts = api.accessProducts(token, iCategoryId);
         accessProducts.enqueue(new Callback<Product>() {
             @Override
             public void onResponse(Call<Product> call, Response<Product> response) {
                 if(response.isSuccessful()) {
-                    Product  product = response.body();
-                    assert product != null;
-                    List<ProductList> productLists = product.getProduct();
-                    for(ProductList productList1 : productLists) {
 
-                        
+                    Product product = response.body();
 
+                      List<ProductList> productLists = product.getProduct();
+                      for(ProductList list : productLists) {
+                          Log.d("product", "Product" + list.getAliasName());
+                          Log.d("product", "Product" + list.getRfid());
+                          Log.d("product", "Product" + list.getBarcodeId());
+                          Log.d("product", "Product" + list.getRfid());
 
-                    }
+                      }
 
+                    getProducts =  product.getProduct();
 
+                    for(int i = 0; i <= getProducts.size(); i++);
 
+                    ProductAdapter displayProducts = new ProductAdapter(getProducts, Inventory.this, R.layout.product_layout);
+                    listView.setAdapter(displayProducts);
                 }
             }
 

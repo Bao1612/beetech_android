@@ -353,7 +353,6 @@
 
         <ListView
             android:id="@+id/listView"
-            android:backgroundTint="@color/blue"
             android:layout_marginTop="28dp"
             android:background="@color/white"
             android:layout_width="match_parent"

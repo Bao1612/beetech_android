@@ -9,15 +9,15 @@ import android.widget.TextView;
 
 import com.example.login_form.R;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ProductAdapter extends BaseAdapter {
 
-    private final ArrayList<ProductList> getProduct;
+    private final List<ProductList> getProduct;
     private final Context context;
     private final int layout;
 
-    public ProductAdapter(ArrayList<ProductList> getProduct, Context context, int layout) {
+    public ProductAdapter(List<ProductList> getProduct, Context context, int layout) {
         this.getProduct = getProduct;
         this.context = context;
         this.layout = layout;
@@ -53,6 +53,7 @@ public class ProductAdapter extends BaseAdapter {
         viewHolder.productBarCode = convertView.findViewById(R.id.productBarCode);
         viewHolder.productRFID = convertView.findViewById(R.id.productRFID);
         ProductList productList = getProduct.get(position);
+
         viewHolder.productID.setText("ID: " + productList.getInternalId());
         viewHolder.productName.setText("Products name: " + productList.getAliasName());
         viewHolder.productBarCode.setText("Prodcts BarCode: " + productList.getBarcodeId());
